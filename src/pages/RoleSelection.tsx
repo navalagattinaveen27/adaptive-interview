@@ -110,20 +110,18 @@ const RoleSelection = () => {
             placeholder="Search or type a role..."
           />
 
-          {domains.length > 0 && (
-            <DropdownInput
-              label="Domain / Specialization"
-              icon={Layers}
-              value={domain}
-              search={domainSearch}
-              setSearch={setDomainSearch}
-              show={showDomainDropdown}
-              setShow={setShowDomainDropdown}
-              items={filteredDomains}
-              onSelect={setDomain}
-              placeholder="Search or type a domain..."
-            />
-          )}
+          <DropdownInput
+            label="Domain / Specialization (Optional)"
+            icon={Layers}
+            value={domain}
+            search={domainSearch}
+            setSearch={setDomainSearch}
+            show={showDomainDropdown}
+            setShow={setShowDomainDropdown}
+            items={filteredDomains}
+            onSelect={setDomain}
+            placeholder={domains.length > 0 ? "Select from suggestions or type your own..." : "Type your domain or specialization..."}
+          />
 
           <DropdownInput
             label="Years of Experience (Optional)"
@@ -143,7 +141,7 @@ const RoleSelection = () => {
             <div className="rounded-lg bg-muted p-4 space-y-1 text-sm">
               <p><span className="text-muted-foreground">Role:</span> <span className="font-medium">{role}</span></p>
               {domain && <p><span className="text-muted-foreground">Domain:</span> <span className="font-medium">{domain}</span></p>}
-              <p><span className="text-muted-foreground">Experience:</span> <span className="font-medium">{experience}</span></p>
+              {experience && <p><span className="text-muted-foreground">Experience:</span> <span className="font-medium">{experience}</span></p>}
             </div>
           )}
 

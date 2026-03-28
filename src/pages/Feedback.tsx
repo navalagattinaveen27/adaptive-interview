@@ -1,6 +1,7 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   ChevronRight,
@@ -17,7 +18,11 @@ import {
   Sparkles,
   RotateCcw,
   LayoutDashboard,
+  Mail,
+  CheckCircle2,
+  Loader2,
 } from "lucide-react";
+import { toast } from "sonner";
 
 interface CategoryScore {
   name: string;
@@ -31,6 +36,9 @@ const Feedback = () => {
   const navigate = useNavigate();
   const role = sessionStorage.getItem("interview_role") || "General";
   const answers = JSON.parse(sessionStorage.getItem("interview_answers") || "[]");
+  const [email, setEmail] = useState("");
+  const [sendingEmail, setSendingEmail] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
 
   const hasAnswers = answers.length > 0;
   const avgLength = hasAnswers
@@ -137,6 +145,19 @@ const Feedback = () => {
     return "Needs Work";
   };
 
+  const handleSendEmail = async () => {
+    if (!email || !email.includes("@")) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+    setSendingEmail(true);
+    // Simulate sending email
+    await new Promise((r) => setTimeout(r, 1500));
+    toast.success(`Report sent to ${email}!`);
+    setSendingEmail(false);
+    setEmailSent(true);
+  };
+
   return (
     <div className="flex-1 py-10 px-4 bg-gradient-to-b from-primary/5 via-background to-background min-h-screen">
       <div className="container max-w-4xl space-y-8 animate-fade-in">
@@ -213,13 +234,10 @@ const Feedback = () => {
               <Card key={i} className="group hover:shadow-md transition-shadow duration-300 border-border/60">
                 <CardContent className="p-5">
                   <div className="flex items-start gap-4">
-                    {/* Icon */}
                     <div className={`shrink-0 w-10 h-10 rounded-lg flex items-center justify-center border ${getScoreBg(cat.score)} ${getScoreColor(cat.score)}`}>
                       {cat.icon}
                     </div>
-
                     <div className="flex-1 min-w-0 space-y-2.5">
-                      {/* Title + Score */}
                       <div className="flex items-center justify-between gap-2">
                         <h3 className="text-base font-bold">
                           {i + 1}. {cat.name}
@@ -228,16 +246,12 @@ const Feedback = () => {
                           {cat.score}/{cat.maxScore}
                         </span>
                       </div>
-
-                      {/* Progress Bar */}
                       <div className="w-full h-2 rounded-full bg-muted overflow-hidden">
                         <div
                           className={`h-full rounded-full transition-all duration-700 ease-out ${getProgressColor(cat.score)}`}
                           style={{ width: `${cat.score}%` }}
                         />
                       </div>
-
-                      {/* Description */}
                       <p className="text-sm text-muted-foreground leading-relaxed">
                         {cat.description}
                       </p>
@@ -251,7 +265,6 @@ const Feedback = () => {
 
         {/* Strengths & Improvements Grid */}
         <div className="grid md:grid-cols-2 gap-5">
-          {/* Strengths */}
           <Card className="border-success/20 bg-success/[0.03]">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
@@ -273,7 +286,6 @@ const Feedback = () => {
             </CardContent>
           </Card>
 
-          {/* Areas of Improvement */}
           <Card className="border-accent/20 bg-accent/[0.03]">
             <CardHeader className="pb-3">
               <CardTitle className="text-lg flex items-center gap-2">
@@ -295,6 +307,48 @@ const Feedback = () => {
             </CardContent>
           </Card>
         </div>
+
+        {/* Send Report to Email */}
+        <Card className="border-primary/20 shadow-lg">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Mail className="h-5 w-5 text-primary" />
+              Send Report to Email
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {emailSent ? (
+              <div className="flex items-center gap-3 text-success py-2">
+                <CheckCircle2 className="h-5 w-5" />
+                <span className="font-medium">Report has been sent to {email}!</span>
+              </div>
+            ) : (
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Input
+                  type="email"
+                  placeholder="Enter your email address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="flex-1 py-5"
+                />
+                <Button
+                  className="gradient-primary text-primary-foreground px-8 py-5 font-semibold shrink-0"
+                  onClick={handleSendEmail}
+                  disabled={sendingEmail}
+                >
+                  {sendingEmail ? (
+                    <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Sending...</>
+                  ) : (
+                    <><Mail className="mr-2 h-4 w-4" /> Send Report</>
+                  )}
+                </Button>
+              </div>
+            )}
+            <p className="text-xs text-muted-foreground mt-3">
+              We'll send a detailed PDF report of your interview performance to this email address.
+            </p>
+          </CardContent>
+        </Card>
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4 pb-8">

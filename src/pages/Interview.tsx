@@ -5,34 +5,45 @@ import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ChevronRight, ChevronLeft, Briefcase, Clock, Layers, Volume2, VolumeX, Mic, MicOff, Send } from "lucide-react";
+import { getPlanById, PRICING_PLANS } from "@/data/pricing";
 
-const generateQuestions = (role: string): string[] => [
-  "Tell me about yourself and why you're interested in this role.",
-  `What motivated you to pursue a career as a ${role}?`,
-  "Describe a challenging project you've worked on. What was your role and contribution?",
-  "How do you stay updated with the latest trends and technologies in your field?",
-  "Tell me about a time you had a disagreement with a colleague. How did you handle it?",
-  "What are your greatest professional strengths?",
-  "Where do you see yourself in 5 years?",
-  "How do you prioritize tasks when working on multiple projects simultaneously?",
-  "Describe a situation where you had to learn something new quickly.",
-  "How do you handle pressure and tight deadlines?",
-  "Tell me about a time you failed. What did you learn from it?",
-  "What makes you a good fit for this position?",
-  "How do you approach problem-solving in complex situations?",
-  "Describe your ideal work environment.",
-  "Do you have any questions for us?",
-];
+const generateQuestions = (role: string, count: number): string[] => {
+  const allQuestions = [
+    "Tell me about yourself and why you're interested in this role.",
+    `What motivated you to pursue a career as a ${role}?`,
+    "Describe a challenging project you've worked on. What was your role and contribution?",
+    "How do you stay updated with the latest trends and technologies in your field?",
+    "Tell me about a time you had a disagreement with a colleague. How did you handle it?",
+    "What are your greatest professional strengths?",
+    "Where do you see yourself in 5 years?",
+    "How do you prioritize tasks when working on multiple projects simultaneously?",
+    "Describe a situation where you had to learn something new quickly.",
+    "How do you handle pressure and tight deadlines?",
+    "Tell me about a time you failed. What did you learn from it?",
+    "What makes you a good fit for this position?",
+    "How do you approach problem-solving in complex situations?",
+    "Describe your ideal work environment.",
+    "Tell me about your experience working in teams.",
+    "How do you handle constructive criticism?",
+    "What is your approach to continuous learning and self-improvement?",
+    "Describe a situation where you demonstrated leadership skills.",
+    "How do you manage work-life balance?",
+    "Do you have any questions for us?",
+  ];
+  return allQuestions.slice(0, Math.min(count, allQuestions.length));
+};
 
 const Interview = () => {
   const navigate = useNavigate();
   const role = sessionStorage.getItem("interview_role") || "General";
   const domain = sessionStorage.getItem("interview_domain") || "";
   const experience = sessionStorage.getItem("interview_experience") || "";
+  const planId = sessionStorage.getItem("selected_plan") || "standard";
+  const plan = getPlanById(planId) || PRICING_PLANS[1];
 
-  const [questions] = useState(() => generateQuestions(role));
+  const [questions] = useState(() => generateQuestions(role, plan.questionCount));
   const [currentQ, setCurrentQ] = useState(0);
-  const [answers, setAnswers] = useState<string[]>(Array(15).fill(""));
+  const [answers, setAnswers] = useState<string[]>(Array(questions.length).fill(""));
   const [answer, setAnswer] = useState("");
   const [isSpeakingQuestion, setIsSpeakingQuestion] = useState(false);
   const [isListening, setIsListening] = useState(false);
@@ -143,11 +154,9 @@ const Interview = () => {
               <Layers className="h-3.5 w-3.5" /> {domain}
             </span>
           )}
-          {experience && (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-muted text-muted-foreground px-3 py-1.5 text-xs">
-              <Clock className="h-3.5 w-3.5" /> {experience}
-            </span>
-          )}
+          <span className="inline-flex items-center gap-1.5 rounded-full bg-muted text-muted-foreground px-3 py-1.5 text-xs">
+            <Clock className="h-3.5 w-3.5" /> {plan.name} ({plan.duration} min)
+          </span>
         </div>
 
         {/* Progress */}

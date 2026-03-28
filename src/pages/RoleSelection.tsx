@@ -5,7 +5,70 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ROLES, getDomainsForRole, EXPERIENCE_OPTIONS } from "@/data/roles";
-import { Search, ChevronRight, Briefcase, Layers, Clock } from "lucide-react";
+import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon } from "lucide-react";
+
+interface DropdownInputProps {
+  label: string;
+  icon: LucideIcon;
+  value: string;
+  search: string;
+  setSearch: (v: string) => void;
+  show: boolean;
+  setShow: (v: boolean) => void;
+  items: string[];
+  onSelect: (v: string) => void;
+  placeholder: string;
+}
+
+const DropdownInput = ({
+  label, icon: Icon, value, search, setSearch, show, setShow, items, onSelect, placeholder,
+}: DropdownInputProps) => (
+  <div className="space-y-2">
+    <Label className="flex items-center gap-2 text-sm font-medium">
+      <Icon className="h-4 w-4 text-primary" /> {label}
+    </Label>
+    <div className="relative">
+      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+      <Input
+        className="pl-9"
+        placeholder={placeholder}
+        value={show ? search : value || search}
+        onChange={(e) => { setSearch(e.target.value); setShow(true); onSelect(e.target.value); }}
+        onFocus={() => setShow(true)}
+        onBlur={(e) => {
+          const container = e.currentTarget.closest('.relative');
+          const relatedTarget = e.relatedTarget as Node | null;
+          if (container && relatedTarget && container.contains(relatedTarget)) return;
+          setTimeout(() => setShow(false), 150);
+        }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === 'Tab') {
+            setShow(false);
+            if (search && !value) onSelect(search);
+          }
+        }}
+      />
+      {show && items.length > 0 && (
+        <div className="absolute z-50 mt-1 w-full max-h-60 overflow-auto rounded-lg border border-border bg-card shadow-lg">
+          {items.map((item) => (
+            <button
+              key={item}
+              type="button"
+              tabIndex={-1}
+              className="w-full text-left px-4 py-2.5 text-sm hover:bg-muted transition-colors"
+              onMouseDown={(e) => { e.preventDefault(); onSelect(item); setSearch(""); setShow(false); }}
+            >
+              {item}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+    {value && !show && (
+      <p className="text-xs text-primary font-medium">Selected: {value}</p>
+    )}
+  </div>
+);
 
 const RoleSelection = () => {
   const navigate = useNavigate();
@@ -46,60 +109,6 @@ const RoleSelection = () => {
     sessionStorage.setItem("interview_experience", experience);
     navigate("/payment");
   };
-
-  const DropdownInput = ({
-    label, icon: Icon, value, search, setSearch, show, setShow, items, onSelect, placeholder,
-  }: {
-    label: string; icon: typeof Briefcase; value: string; search: string;
-    setSearch: (v: string) => void; show: boolean; setShow: (v: boolean) => void;
-    items: string[]; onSelect: (v: string) => void; placeholder: string;
-  }) => (
-    <div className="space-y-2">
-      <Label className="flex items-center gap-2 text-sm font-medium">
-        <Icon className="h-4 w-4 text-primary" /> {label}
-      </Label>
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-        <Input
-          className="pl-9"
-          placeholder={placeholder}
-          value={show ? search : value || search}
-          onChange={(e) => { setSearch(e.target.value); setShow(true); onSelect(e.target.value); }}
-          onFocus={() => setShow(true)}
-          onBlur={(e) => {
-            const container = e.currentTarget.closest('.relative');
-            const relatedTarget = e.relatedTarget as Node | null;
-            if (container && relatedTarget && container.contains(relatedTarget)) return;
-            setTimeout(() => setShow(false), 150);
-          }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === 'Tab') {
-              setShow(false);
-              if (search && !value) onSelect(search);
-            }
-          }}
-        />
-        {show && items.length > 0 && (
-          <div className="absolute z-50 mt-1 w-full max-h-60 overflow-auto rounded-lg border border-border bg-card shadow-lg">
-            {items.map((item) => (
-              <button
-                key={item}
-                type="button"
-                tabIndex={-1}
-                className="w-full text-left px-4 py-2.5 text-sm hover:bg-muted transition-colors"
-                onMouseDown={(e) => { e.preventDefault(); onSelect(item); setSearch(""); setShow(false); }}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-      {value && !show && (
-        <p className="text-xs text-primary font-medium">Selected: {value}</p>
-      )}
-    </div>
-  );
 
   return (
     <div className="flex-1 flex items-center justify-center py-12 px-4">
@@ -148,7 +157,6 @@ const RoleSelection = () => {
             placeholder="Select or type experience..."
           />
 
-          {/* Summary */}
           {canProceed && (
             <div className="rounded-lg bg-muted p-4 space-y-1 text-sm">
               <p><span className="text-muted-foreground">Role:</span> <span className="font-medium">{role}</span></p>

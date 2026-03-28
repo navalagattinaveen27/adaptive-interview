@@ -58,10 +58,10 @@ const Interview = () => {
 
   // Speech-to-text for answering
   const startListening = useCallback(() => {
-    const SpeechRecognition = window.SpeechRecognition || (window as any).webkitSpeechRecognition;
-    if (!SpeechRecognition) return;
+    const SpeechRecognitionCtor = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognitionCtor) return;
 
-    const recognition = new SpeechRecognition();
+    const recognition = new SpeechRecognitionCtor() as SpeechRecognition;
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = "en-US";

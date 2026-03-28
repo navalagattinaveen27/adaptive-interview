@@ -38,7 +38,7 @@ const RoleSelection = () => {
     return q ? EXPERIENCE_OPTIONS.filter((e) => e.toLowerCase().includes(q)) : EXPERIENCE_OPTIONS;
   }, [expSearch]);
 
-  const canProceed = role.trim() && experience.trim();
+  const canProceed = role.trim().length > 0;
 
   const handleProceed = () => {
     sessionStorage.setItem("interview_role", role);
@@ -126,7 +126,7 @@ const RoleSelection = () => {
           )}
 
           <DropdownInput
-            label="Years of Experience *"
+            label="Years of Experience (Optional)"
             icon={Clock}
             value={experience}
             search={expSearch}

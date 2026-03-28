@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Brain, BarChart3, MessageSquare, CreditCard, ChevronRight, Sparkles, Target, TrendingUp, ArrowRight, Zap } from "lucide-react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Brain, BarChart3, MessageSquare, ChevronRight, Sparkles, Target, TrendingUp, ArrowRight, Zap, Clock, CheckCircle2, Crown } from "lucide-react";
+import { PRICING_PLANS, PLAN_FEATURES } from "@/data/pricing";
 
 const features = [
   { icon: Brain, title: "AI-Powered Questions", desc: "Dynamic questions generated based on your role, domain, and experience level." },
@@ -9,12 +11,11 @@ const features = [
   { icon: BarChart3, title: "Detailed Scoring", desc: "Get scored on each answer with strengths and improvement areas." },
   { icon: TrendingUp, title: "Progress Tracking", desc: "Track your performance trends across multiple sessions." },
   { icon: MessageSquare, title: "Personalized Feedback", desc: "Receive AI-generated feedback to sharpen your interview skills." },
-  { icon: CreditCard, title: "Pay Per Session", desc: "No subscriptions — pay only for the sessions you take." },
 ];
 
 const steps = [
   { num: "01", title: "Choose Your Role", desc: "Select from 100+ roles across tech, government, and defense sectors." },
-  { num: "02", title: "Take the Interview", desc: "Answer AI-generated questions using text or voice input." },
+  { num: "02", title: "Pick a Plan", desc: "Choose a 20, 30, or 45-minute interview session that fits your needs." },
   { num: "03", title: "Get Your Report", desc: "Receive a detailed performance breakdown with actionable insights." },
 ];
 
@@ -22,7 +23,10 @@ const Index = () => {
   const { isAuthenticated } = useAuth();
   const navigate = useNavigate();
 
-  const handleStart = () => {
+  const handleStart = (planId?: string) => {
+    if (planId) {
+      sessionStorage.setItem("selected_plan", planId);
+    }
     if (!isAuthenticated) {
       sessionStorage.setItem("redirect_after_login", "/role-selection");
       navigate("/login");
@@ -35,7 +39,6 @@ const Index = () => {
     <div className="flex flex-col">
       {/* Hero */}
       <section className="relative gradient-hero text-primary-foreground py-24 md:py-36 overflow-hidden">
-        {/* Decorative elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
           <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl" />
@@ -59,7 +62,7 @@ const Index = () => {
             <Button
               size="lg"
               className="gradient-accent text-accent-foreground text-base px-10 py-7 rounded-xl font-bold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
-              onClick={handleStart}
+              onClick={() => handleStart()}
             >
               Start Interview <ChevronRight className="ml-1 h-5 w-5" />
             </Button>
@@ -67,9 +70,9 @@ const Index = () => {
               size="lg"
               variant="outline"
               className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-base px-8 py-7 rounded-xl font-semibold backdrop-blur-sm"
-              onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => document.getElementById("pricing")?.scrollIntoView({ behavior: "smooth" })}
             >
-              Learn More <ArrowRight className="ml-1 h-5 w-5" />
+              View Pricing <ArrowRight className="ml-1 h-5 w-5" />
             </Button>
           </div>
 
@@ -119,8 +122,90 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Pricing */}
+      <section id="pricing" className="py-20 md:py-28">
+        <div className="container max-w-5xl">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 text-primary text-sm font-semibold mb-3">
+              <Crown className="h-4 w-4" /> PRICING
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Choose Your Interview Plan</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">Pay per session — no subscriptions required. All plans include the same powerful features.</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
+            {PRICING_PLANS.map((plan) => (
+              <Card
+                key={plan.id}
+                className={`relative overflow-hidden hover:shadow-xl hover:-translate-y-1 transition-all duration-300 ${
+                  plan.popular
+                    ? "border-2 border-primary shadow-lg scale-[1.02]"
+                    : "border-border/60"
+                }`}
+              >
+                {plan.popular && (
+                  <div className="absolute top-0 left-0 right-0 h-1 gradient-primary" />
+                )}
+                {plan.popular && (
+                  <div className="absolute -top-0 right-4">
+                    <span className="inline-block gradient-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-b-lg">
+                      MOST POPULAR
+                    </span>
+                  </div>
+                )}
+                <CardHeader className="text-center pb-2 pt-8">
+                  <CardTitle className="text-lg font-bold">{plan.name}</CardTitle>
+                  <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-sm mt-1">
+                    <Clock className="h-4 w-4" /> {plan.duration} minutes
+                  </div>
+                </CardHeader>
+                <CardContent className="text-center space-y-5 pb-8">
+                  <div>
+                    <div className="text-4xl font-extrabold text-foreground">
+                      ₹{plan.total.toFixed(plan.total % 1 === 0 ? 0 : 2)}
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-1">
+                      ₹{plan.price} + ₹{plan.gst % 1 === 0 ? plan.gst : plan.gst.toFixed(1)} GST (18%)
+                    </p>
+                  </div>
+                  <div className="text-sm font-medium text-foreground">
+                    {plan.questionsRange[0]}–{plan.questionsRange[1]} AI-powered questions
+                  </div>
+                  <Button
+                    className={`w-full py-5 font-bold rounded-xl ${
+                      plan.popular
+                        ? "gradient-primary text-primary-foreground shadow-lg hover:shadow-xl"
+                        : ""
+                    }`}
+                    variant={plan.popular ? "default" : "outline"}
+                    onClick={() => handleStart(plan.id)}
+                  >
+                    Get Started <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Features list */}
+          <Card className="border-border/60">
+            <CardContent className="py-8">
+              <h3 className="text-center font-bold text-lg mb-6">All Plans Include</h3>
+              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                {PLAN_FEATURES.map((feature) => (
+                  <div key={feature} className="flex items-start gap-2.5 text-sm">
+                    <CheckCircle2 className="h-4 w-4 text-success shrink-0 mt-0.5" />
+                    <span className="text-muted-foreground">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
       {/* Features */}
-      <section id="features" className="py-20 md:py-28">
+      <section id="features" className="py-20 md:py-28 bg-muted/50">
         <div className="container">
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-2 text-primary text-sm font-semibold mb-3">
@@ -129,7 +214,7 @@ const Index = () => {
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything You Need to Prepare</h2>
             <p className="text-muted-foreground max-w-xl mx-auto">Comprehensive tools designed to help you land your dream role.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
             {features.map((f, i) => (
               <div
                 key={f.title}
@@ -157,7 +242,7 @@ const Index = () => {
             <Button
               size="lg"
               className="gradient-primary text-primary-foreground px-10 py-7 rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
-              onClick={handleStart}
+              onClick={() => handleStart()}
             >
               Get Started Free <ChevronRight className="ml-1 h-5 w-5" />
             </Button>

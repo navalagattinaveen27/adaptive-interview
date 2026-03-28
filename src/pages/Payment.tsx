@@ -54,10 +54,10 @@ const Payment = () => {
             </div>
             <hr className="border-border" />
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">Interview Session</span><span>₹199</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Interview Session</span><span>$5</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">AI Feedback Report</span><span>Included</span></div>
               <hr className="border-border" />
-              <div className="flex justify-between font-bold text-base"><span>Total</span><span>₹199</span></div>
+              <div className="flex justify-between font-bold text-base"><span>Total</span><span>$5</span></div>
             </div>
             <div className="space-y-1.5 text-xs text-muted-foreground">
               <div className="flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-success" /> 15 AI-powered questions</div>
@@ -85,14 +85,14 @@ const Payment = () => {
                 </div>
                 <div><Label>Cardholder Name</Label><Input placeholder="Name on card" /></div>
                 <Button className="w-full gradient-primary text-primary-foreground py-5 font-semibold" onClick={handlePayment} disabled={processing}>
-                  {processing ? "Processing..." : "Pay ₹199"}
+                  {processing ? "Processing..." : "Pay $5"}
                 </Button>
               </TabsContent>
 
               <TabsContent value="upi" className="space-y-4">
                 <div><Label>UPI ID</Label><Input placeholder="yourname@upi" /></div>
                 <Button className="w-full gradient-primary text-primary-foreground py-5 font-semibold" onClick={handlePayment} disabled={processing}>
-                  {processing ? "Processing..." : "Pay ₹199 via UPI"}
+                  {processing ? "Processing..." : "Pay $5 via UPI"}
                 </Button>
               </TabsContent>
             </Tabs>

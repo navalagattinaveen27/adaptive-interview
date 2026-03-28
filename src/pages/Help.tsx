@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Star, Send, MessageSquare, HelpCircle } from "lucide-react";
+import { Star, Send, MessageSquare, HelpCircle, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
 const Help = () => {
@@ -37,11 +37,14 @@ const Help = () => {
   };
 
   return (
-    <div className="flex-1 py-8 px-4">
+    <div className="flex-1 py-8 px-4 bg-gradient-to-b from-primary/5 via-background to-background min-h-screen">
       <div className="container max-w-2xl space-y-6 animate-fade-in">
-        <div className="text-center space-y-2">
+        <div className="text-center space-y-3">
+          <div className="mx-auto mb-1 h-14 w-14 rounded-2xl gradient-primary flex items-center justify-center shadow-lg">
+            <Sparkles className="h-7 w-7 text-primary-foreground" />
+          </div>
           <h1 className="text-3xl font-bold">Help & Feedback</h1>
-          <p className="text-muted-foreground">Have a question or want to share your thoughts? We're here to help.</p>
+          <p className="text-muted-foreground text-lg">Have a question or want to share your thoughts? We're here to help.</p>
         </div>
 
         <Tabs defaultValue="support">
@@ -55,33 +58,38 @@ const Help = () => {
           </TabsList>
 
           <TabsContent value="support" className="mt-4">
-            <Card>
+            <Card className="shadow-lg border-border/60">
               <CardHeader>
-                <CardTitle className="text-lg">Send Us a Question</CardTitle>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <HelpCircle className="h-4 w-4 text-primary" />
+                  Send Us a Question
+                </CardTitle>
                 <CardDescription>We'll respond to your query as soon as possible.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmitQuestion} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="subject">Subject</Label>
+                    <Label htmlFor="subject" className="font-medium">Subject</Label>
                     <Input
                       id="subject"
                       placeholder="e.g. Issue with interview audio"
                       value={subject}
                       onChange={(e) => setSubject(e.target.value)}
+                      className="py-5"
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="question">Your Question</Label>
+                    <Label htmlFor="question" className="font-medium">Your Question</Label>
                     <Textarea
                       id="question"
                       placeholder="Describe your question or issue in detail..."
                       value={question}
                       onChange={(e) => setQuestion(e.target.value)}
                       rows={5}
+                      className="focus:shadow-md transition-shadow"
                     />
                   </div>
-                  <Button type="submit" className="w-full">
+                  <Button type="submit" className="w-full gradient-primary text-primary-foreground py-5 font-semibold">
                     <Send className="mr-1.5 h-4 w-4" /> Submit Question
                   </Button>
                 </form>
@@ -90,34 +98,43 @@ const Help = () => {
           </TabsContent>
 
           <TabsContent value="feedback" className="mt-4">
-            <Card>
+            <Card className="shadow-lg border-border/60">
               <CardHeader>
-                <CardTitle className="text-lg">Rate Your Experience</CardTitle>
+                <CardTitle className="text-lg flex items-center gap-2">
+                  <MessageSquare className="h-4 w-4 text-accent" />
+                  Rate Your Experience
+                </CardTitle>
                 <CardDescription>Your feedback helps us improve the application.</CardDescription>
               </CardHeader>
               <CardContent>
                 <form onSubmit={handleSubmitFeedback} className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Rating</Label>
-                    <div className="flex gap-1">
+                    <Label className="font-medium">Rating</Label>
+                    <div className="flex gap-1.5 p-3 rounded-xl bg-muted/50 w-fit">
                       {[1, 2, 3, 4, 5].map((s) => (
-                        <button type="button" key={s} onClick={() => setRating(s)} className="p-1">
+                        <button
+                          type="button"
+                          key={s}
+                          onClick={() => setRating(s)}
+                          className="p-1 hover:scale-110 transition-transform"
+                        >
                           <Star className={`h-8 w-8 transition-colors ${s <= rating ? "fill-accent text-accent" : "text-muted-foreground/30"}`} />
                         </button>
                       ))}
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="feedback">Comments (optional)</Label>
+                    <Label htmlFor="feedback" className="font-medium">Comments (optional)</Label>
                     <Textarea
                       id="feedback"
                       placeholder="Tell us what you liked or what we can improve..."
                       value={feedbackText}
                       onChange={(e) => setFeedbackText(e.target.value)}
                       rows={4}
+                      className="focus:shadow-md transition-shadow"
                     />
                   </div>
-                  <Button type="submit" className="w-full">
+                  <Button type="submit" className="w-full gradient-accent text-accent-foreground py-5 font-semibold">
                     <MessageSquare className="mr-1.5 h-4 w-4" /> Submit Feedback
                   </Button>
                 </form>

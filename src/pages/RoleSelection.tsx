@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ROLES, getDomainsForRole, EXPERIENCE_OPTIONS } from "@/data/roles";
-import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon } from "lucide-react";
+import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2 } from "lucide-react";
 
 interface DropdownInputProps {
   label: string;
@@ -24,13 +24,13 @@ const DropdownInput = ({
   label, icon: Icon, value, search, setSearch, show, setShow, items, onSelect, placeholder,
 }: DropdownInputProps) => (
   <div className="space-y-2">
-    <Label className="flex items-center gap-2 text-sm font-medium">
+    <Label className="flex items-center gap-2 text-sm font-semibold">
       <Icon className="h-4 w-4 text-primary" /> {label}
     </Label>
     <div className="relative">
       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
       <Input
-        className="pl-9"
+        className="pl-9 py-5 transition-shadow focus:shadow-md"
         placeholder={placeholder}
         value={show ? search : value || search}
         onChange={(e) => { setSearch(e.target.value); setShow(true); onSelect(e.target.value); }}
@@ -49,13 +49,13 @@ const DropdownInput = ({
         }}
       />
       {show && items.length > 0 && (
-        <div className="absolute z-50 mt-1 w-full max-h-60 overflow-auto rounded-lg border border-border bg-card shadow-lg">
+        <div className="absolute z-50 mt-1 w-full max-h-60 overflow-auto rounded-xl border border-border bg-card shadow-xl">
           {items.map((item) => (
             <button
               key={item}
               type="button"
               tabIndex={-1}
-              className="w-full text-left px-4 py-2.5 text-sm hover:bg-muted transition-colors"
+              className="w-full text-left px-4 py-2.5 text-sm hover:bg-primary/5 hover:text-primary transition-colors"
               onMouseDown={(e) => { e.preventDefault(); onSelect(item); setSearch(""); setShow(false); }}
             >
               {item}
@@ -65,7 +65,9 @@ const DropdownInput = ({
       )}
     </div>
     {value && !show && (
-      <p className="text-xs text-primary font-medium">Selected: {value}</p>
+      <p className="text-xs text-primary font-medium flex items-center gap-1">
+        <CheckCircle2 className="h-3 w-3" /> {value}
+      </p>
     )}
   </div>
 );
@@ -111,9 +113,12 @@ const RoleSelection = () => {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center py-12 px-4">
-      <Card className="w-full max-w-lg animate-fade-in">
-        <CardHeader className="text-center">
+    <div className="flex-1 flex items-center justify-center py-12 px-4 bg-gradient-to-b from-primary/5 via-background to-background min-h-screen">
+      <Card className="w-full max-w-lg animate-fade-in shadow-xl border-border/60">
+        <CardHeader className="text-center pb-4">
+          <div className="mx-auto mb-3 h-14 w-14 rounded-2xl gradient-primary flex items-center justify-center shadow-lg">
+            <Sparkles className="h-7 w-7 text-primary-foreground" />
+          </div>
           <CardTitle className="text-2xl font-bold">Customize Your Interview</CardTitle>
           <CardDescription>Select your target role, domain, and experience level</CardDescription>
         </CardHeader>
@@ -158,15 +163,16 @@ const RoleSelection = () => {
           />
 
           {canProceed && (
-            <div className="rounded-lg bg-muted p-4 space-y-1 text-sm">
-              <p><span className="text-muted-foreground">Role:</span> <span className="font-medium">{role}</span></p>
-              {domain && <p><span className="text-muted-foreground">Domain:</span> <span className="font-medium">{domain}</span></p>}
-              {experience && <p><span className="text-muted-foreground">Experience:</span> <span className="font-medium">{experience}</span></p>}
+            <div className="rounded-xl bg-primary/5 border border-primary/15 p-4 space-y-1.5 text-sm">
+              <p className="font-semibold text-primary text-xs uppercase tracking-wider mb-2">Your Selection</p>
+              <p><span className="text-muted-foreground">Role:</span> <span className="font-semibold">{role}</span></p>
+              {domain && <p><span className="text-muted-foreground">Domain:</span> <span className="font-semibold">{domain}</span></p>}
+              {experience && <p><span className="text-muted-foreground">Experience:</span> <span className="font-semibold">{experience}</span></p>}
             </div>
           )}
 
           <Button
-            className="w-full gradient-accent text-accent-foreground py-6 rounded-xl text-base font-semibold"
+            className="w-full gradient-accent text-accent-foreground py-6 rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300"
             disabled={!canProceed}
             onClick={handleProceed}
           >

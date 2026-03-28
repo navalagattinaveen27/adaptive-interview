@@ -1,7 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Brain, BarChart3, MessageSquare, CreditCard, ChevronRight, Sparkles, Target, TrendingUp } from "lucide-react";
+import { Brain, BarChart3, MessageSquare, CreditCard, ChevronRight, Sparkles, Target, TrendingUp, ArrowRight, Zap } from "lucide-react";
 
 const features = [
   { icon: Brain, title: "AI-Powered Questions", desc: "Dynamic questions generated based on your role, domain, and experience level." },
@@ -10,6 +10,12 @@ const features = [
   { icon: TrendingUp, title: "Progress Tracking", desc: "Track your performance trends across multiple sessions." },
   { icon: MessageSquare, title: "Personalized Feedback", desc: "Receive AI-generated feedback to sharpen your interview skills." },
   { icon: CreditCard, title: "Pay Per Session", desc: "No subscriptions — pay only for the sessions you take." },
+];
+
+const steps = [
+  { num: "01", title: "Choose Your Role", desc: "Select from 100+ roles across tech, government, and defense sectors." },
+  { num: "02", title: "Take the Interview", desc: "Answer AI-generated questions using text or voice input." },
+  { num: "03", title: "Get Your Report", desc: "Receive a detailed performance breakdown with actionable insights." },
 ];
 
 const Index = () => {
@@ -28,37 +34,112 @@ const Index = () => {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="gradient-hero text-primary-foreground py-24 md:py-32">
-        <div className="container text-center max-w-3xl animate-fade-in">
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-1.5 text-sm mb-6">
+      <section className="relative gradient-hero text-primary-foreground py-24 md:py-36 overflow-hidden">
+        {/* Decorative elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute -bottom-32 -left-32 w-[500px] h-[500px] bg-white/5 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/[0.02] rounded-full" />
+        </div>
+
+        <div className="container text-center max-w-3xl relative animate-fade-in">
+          <div className="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 bg-primary-foreground/10 px-4 py-1.5 text-sm mb-8 backdrop-blur-sm">
             <Sparkles className="h-4 w-4" /> AI-Powered Interview Practice
           </div>
-          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight mb-6">
-            Ace Your Next Interview with AI
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-extrabold tracking-tight leading-[1.1] mb-6">
+            Ace Your Next
+            <span className="block bg-gradient-to-r from-white via-white/90 to-white/70 bg-clip-text text-transparent">
+              Interview with AI
+            </span>
           </h1>
-          <p className="text-lg md:text-xl opacity-90 mb-10 max-w-2xl mx-auto">
+          <p className="text-lg md:text-xl opacity-85 mb-10 max-w-2xl mx-auto leading-relaxed">
             Practice with realistic, AI-generated questions tailored to your role. Get instant feedback, scoring, and actionable insights.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="gradient-accent text-accent-foreground text-base px-8 py-6 rounded-xl font-semibold shadow-lg hover:opacity-90 transition-opacity" onClick={handleStart}>
+            <Button
+              size="lg"
+              className="gradient-accent text-accent-foreground text-base px-10 py-7 rounded-xl font-bold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
+              onClick={handleStart}
+            >
               Start Interview <ChevronRight className="ml-1 h-5 w-5" />
             </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="bg-white/10 border-white/20 text-white hover:bg-white/20 text-base px-8 py-7 rounded-xl font-semibold backdrop-blur-sm"
+              onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              Learn More <ArrowRight className="ml-1 h-5 w-5" />
+            </Button>
+          </div>
+
+          {/* Stats bar */}
+          <div className="mt-16 flex flex-wrap justify-center gap-8 md:gap-16 text-sm">
+            {[
+              { value: "100+", label: "Interview Roles" },
+              { value: "5K+", label: "Sessions Completed" },
+              { value: "95%", label: "User Satisfaction" },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="text-2xl md:text-3xl font-extrabold">{stat.value}</p>
+                <p className="text-primary-foreground/70 text-xs mt-1">{stat.label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Steps */}
+      <section className="py-16 md:py-20 bg-muted/50">
+        <div className="container max-w-4xl">
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 text-primary text-sm font-semibold mb-3">
+              <Zap className="h-4 w-4" /> SIMPLE PROCESS
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold">How It Works</h2>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {steps.map((step, i) => (
+              <div key={step.num} className="relative group">
+                <div className="rounded-2xl bg-card border border-border p-6 h-full hover:shadow-lg hover:border-primary/20 transition-all duration-300">
+                  <span className="text-5xl font-extrabold text-primary/10 group-hover:text-primary/20 transition-colors">
+                    {step.num}
+                  </span>
+                  <h3 className="font-bold text-lg mt-2 mb-2">{step.title}</h3>
+                  <p className="text-muted-foreground text-sm leading-relaxed">{step.desc}</p>
+                </div>
+                {i < steps.length - 1 && (
+                  <div className="hidden md:flex absolute top-1/2 -right-3 z-10">
+                    <ChevronRight className="h-6 w-6 text-muted-foreground/40" />
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features */}
-      <section className="py-20 md:py-28">
+      <section id="features" className="py-20 md:py-28">
         <div className="container">
-          <h2 className="text-3xl md:text-4xl font-bold text-center mb-4">How It Works</h2>
-          <p className="text-muted-foreground text-center mb-14 max-w-xl mx-auto">Everything you need to prepare for your dream role.</p>
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 text-primary text-sm font-semibold mb-3">
+              <Sparkles className="h-4 w-4" /> FEATURES
+            </div>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Everything You Need to Prepare</h2>
+            <p className="text-muted-foreground max-w-xl mx-auto">Comprehensive tools designed to help you land your dream role.</p>
+          </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((f) => (
-              <div key={f.title} className="group rounded-xl border border-border bg-card p-6 hover:shadow-lg hover:border-primary/30 transition-all">
-                <div className="h-12 w-12 rounded-lg gradient-primary flex items-center justify-center mb-4">
+            {features.map((f, i) => (
+              <div
+                key={f.title}
+                className="group rounded-2xl border border-border bg-card p-6 hover:shadow-xl hover:border-primary/30 hover:-translate-y-1 transition-all duration-300"
+                style={{ animationDelay: `${i * 100}ms` }}
+              >
+                <div className="h-12 w-12 rounded-xl gradient-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-300">
                   <f.icon className="h-6 w-6 text-primary-foreground" />
                 </div>
-                <h3 className="font-semibold text-lg mb-2">{f.title}</h3>
+                <h3 className="font-bold text-lg mb-2">{f.title}</h3>
                 <p className="text-muted-foreground text-sm leading-relaxed">{f.desc}</p>
               </div>
             ))}
@@ -67,13 +148,20 @@ const Index = () => {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-muted">
-        <div className="container text-center max-w-2xl">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4">Ready to Practice?</h2>
-          <p className="text-muted-foreground mb-8">Select your target role, customize your experience, and start a realistic interview session.</p>
-          <Button size="lg" className="gradient-primary text-primary-foreground px-8 py-6 rounded-xl text-base font-semibold" onClick={handleStart}>
-            Get Started <ChevronRight className="ml-1 h-5 w-5" />
-          </Button>
+      <section className="py-20 relative overflow-hidden">
+        <div className="absolute inset-0 gradient-hero opacity-[0.06]" />
+        <div className="container text-center max-w-2xl relative">
+          <div className="rounded-3xl bg-card border border-border p-10 md:p-14 shadow-xl">
+            <h2 className="text-2xl md:text-4xl font-bold mb-4">Ready to Practice?</h2>
+            <p className="text-muted-foreground mb-8 text-lg">Select your target role, customize your experience, and start a realistic interview session.</p>
+            <Button
+              size="lg"
+              className="gradient-primary text-primary-foreground px-10 py-7 rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+              onClick={handleStart}
+            >
+              Get Started Free <ChevronRight className="ml-1 h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </section>
     </div>

@@ -2,7 +2,7 @@ import { useState, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Mic, Volume2, CheckCircle2, XCircle, Loader2, ChevronRight } from "lucide-react";
+import { Mic, Volume2, CheckCircle2, XCircle, Loader2, ChevronRight, Sparkles } from "lucide-react";
 
 type TestStatus = "idle" | "testing" | "passed" | "failed";
 
@@ -78,30 +78,42 @@ const DeviceCheck = () => {
 
   const StatusIcon = ({ status }: { status: TestStatus }) => {
     if (status === "testing") return <Loader2 className="h-5 w-5 animate-spin text-primary" />;
-    if (status === "passed") return <CheckCircle2 className="h-5 w-5 text-green-500" />;
+    if (status === "passed") return <CheckCircle2 className="h-5 w-5 text-success" />;
     if (status === "failed") return <XCircle className="h-5 w-5 text-destructive" />;
-    return null;
+    return <div className="h-5 w-5 rounded-full border-2 border-muted-foreground/30" />;
+  };
+
+  const getDeviceCardStyle = (status: TestStatus) => {
+    if (status === "passed") return "border-success/30 bg-success/[0.03]";
+    if (status === "failed") return "border-destructive/30 bg-destructive/[0.03]";
+    if (status === "testing") return "border-primary/30 bg-primary/[0.03]";
+    return "border-border";
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center py-12 px-4">
-      <Card className="w-full max-w-lg animate-fade-in">
-        <CardHeader className="text-center">
+    <div className="flex-1 flex items-center justify-center py-12 px-4 bg-gradient-to-b from-primary/5 via-background to-background min-h-screen">
+      <Card className="w-full max-w-lg animate-fade-in shadow-xl border-border/60">
+        <CardHeader className="text-center pb-4">
+          <div className="mx-auto mb-3 h-14 w-14 rounded-2xl gradient-primary flex items-center justify-center shadow-lg">
+            <Sparkles className="h-7 w-7 text-primary-foreground" />
+          </div>
           <CardTitle className="text-2xl font-bold">Device Check</CardTitle>
           <CardDescription>
-            Please test your microphone and speakers before starting the interview
+            Test your microphone and speakers before starting
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent className="space-y-5">
           {/* Microphone Test */}
-          <div className="rounded-xl border p-5 space-y-3">
+          <div className={`rounded-xl border-2 p-5 space-y-3 transition-colors duration-300 ${getDeviceCardStyle(micStatus)}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-                  <Mic className="h-5 w-5 text-primary" />
+                <div className={`h-11 w-11 rounded-xl flex items-center justify-center transition-colors ${
+                  micStatus === "passed" ? "bg-success/15" : micStatus === "testing" ? "bg-primary/15" : "bg-primary/10"
+                }`}>
+                  <Mic className={`h-5 w-5 ${micStatus === "passed" ? "text-success" : "text-primary"}`} />
                 </div>
                 <div>
-                  <p className="font-semibold">Microphone</p>
+                  <p className="font-bold text-sm">Microphone</p>
                   <p className="text-xs text-muted-foreground">
                     {micStatus === "idle" && "Click to test your microphone"}
                     {micStatus === "testing" && "Speak something now..."}
@@ -123,7 +135,7 @@ const DeviceCheck = () => {
             )}
 
             {(micStatus === "idle" || micStatus === "failed") && (
-              <Button variant="outline" className="w-full" onClick={testMicrophone}>
+              <Button variant="outline" className="w-full py-5" onClick={testMicrophone}>
                 <Mic className="mr-2 h-4 w-4" />
                 {micStatus === "failed" ? "Retry Microphone Test" : "Test Microphone"}
               </Button>
@@ -131,14 +143,16 @@ const DeviceCheck = () => {
           </div>
 
           {/* Speaker Test */}
-          <div className="rounded-xl border p-5 space-y-3">
+          <div className={`rounded-xl border-2 p-5 space-y-3 transition-colors duration-300 ${getDeviceCardStyle(speakerStatus)}`}>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-accent/10 flex items-center justify-center">
-                  <Volume2 className="h-5 w-5 text-accent" />
+                <div className={`h-11 w-11 rounded-xl flex items-center justify-center transition-colors ${
+                  speakerStatus === "passed" ? "bg-success/15" : speakerStatus === "testing" ? "bg-accent/15" : "bg-accent/10"
+                }`}>
+                  <Volume2 className={`h-5 w-5 ${speakerStatus === "passed" ? "text-success" : "text-accent"}`} />
                 </div>
                 <div>
-                  <p className="font-semibold">Speakers</p>
+                  <p className="font-bold text-sm">Speakers</p>
                   <p className="text-xs text-muted-foreground">
                     {speakerStatus === "idle" && "Click to test your speakers"}
                     {speakerStatus === "testing" && "Playing test audio..."}
@@ -151,7 +165,7 @@ const DeviceCheck = () => {
             </div>
 
             {(speakerStatus === "idle" || speakerStatus === "failed") && (
-              <Button variant="outline" className="w-full" onClick={testSpeaker}>
+              <Button variant="outline" className="w-full py-5" onClick={testSpeaker}>
                 <Volume2 className="mr-2 h-4 w-4" />
                 {speakerStatus === "failed" ? "Retry Speaker Test" : "Test Speakers"}
               </Button>
@@ -160,7 +174,7 @@ const DeviceCheck = () => {
 
           {/* Proceed */}
           <Button
-            className="w-full gradient-accent text-accent-foreground py-6 rounded-xl text-base font-semibold"
+            className="w-full gradient-accent text-accent-foreground py-6 rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300"
             disabled={!canProceed}
             onClick={handleProceed}
           >

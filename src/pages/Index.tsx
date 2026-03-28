@@ -43,11 +43,6 @@ const Index = () => {
             <Button size="lg" className="gradient-accent text-accent-foreground text-base px-8 py-6 rounded-xl font-semibold shadow-lg hover:opacity-90 transition-opacity" onClick={handleStart}>
               Start Interview <ChevronRight className="ml-1 h-5 w-5" />
             </Button>
-            {!isAuthenticated && (
-              <Button size="lg" variant="outline" className="border-primary-foreground/30 text-primary-foreground bg-primary-foreground/5 hover:bg-primary-foreground/10 text-base px-8 py-6 rounded-xl" asChild>
-                <Link to="/login">Login</Link>
-              </Button>
-            )}
           </div>
         </div>
       </section>

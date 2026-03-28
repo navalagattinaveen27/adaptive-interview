@@ -95,9 +95,14 @@ const Dashboard = () => {
                     <p className="font-medium text-sm">{s.role}</p>
                     <p className="text-xs text-muted-foreground">{s.date}, 2026</p>
                   </div>
-                  <span className={`font-bold text-sm ${s.score >= 80 ? "text-success" : s.score >= 60 ? "text-accent" : "text-destructive"}`}>
-                    {s.score}%
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className={`font-bold text-sm ${s.score >= 80 ? "text-success" : s.score >= 60 ? "text-accent" : "text-destructive"}`}>
+                      {s.score}%
+                    </span>
+                    <Button variant="ghost" size="sm" className="text-xs text-primary" onClick={() => navigate("/feedback")}>
+                      View Feedback <ChevronRight className="ml-0.5 h-3 w-3" />
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>

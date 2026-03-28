@@ -26,7 +26,7 @@ const Payment = () => {
     await new Promise((r) => setTimeout(r, 1500));
     toast.success("Payment successful!");
     setProcessing(false);
-    navigate("/interview");
+    navigate("/device-check");
   };
 
   return (

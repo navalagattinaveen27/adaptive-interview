@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard";
 import RoleSelection from "./pages/RoleSelection";
 import Payment from "./pages/Payment";
 import Interview from "./pages/Interview";
+import DeviceCheck from "./pages/DeviceCheck";
 import Feedback from "./pages/Feedback";
 import NotFound from "./pages/NotFound";
 
@@ -35,6 +36,7 @@ const AppRoutes = () => (
       <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
       <Route path="/role-selection" element={<ProtectedRoute><RoleSelection /></ProtectedRoute>} />
       <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />
+      <Route path="/device-check" element={<ProtectedRoute><DeviceCheck /></ProtectedRoute>} />
       <Route path="/interview" element={<ProtectedRoute><Interview /></ProtectedRoute>} />
       <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />

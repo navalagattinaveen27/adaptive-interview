@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CreditCard, Smartphone, CheckCircle2, Briefcase, Layers, Clock } from "lucide-react";
+import { CreditCard, Smartphone, CheckCircle2, Briefcase, Layers, Clock, Shield, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 
 const Payment = () => {
@@ -22,7 +22,6 @@ const Payment = () => {
 
   const handlePayment = async () => {
     setProcessing(true);
-    // Mock payment processing
     await new Promise((r) => setTimeout(r, 1500));
     toast.success("Payment successful!");
     setProcessing(false);
@@ -30,46 +29,56 @@ const Payment = () => {
   };
 
   return (
-    <div className="flex-1 flex items-center justify-center py-12 px-4">
+    <div className="flex-1 flex items-center justify-center py-12 px-4 bg-gradient-to-b from-primary/5 via-background to-background min-h-screen">
       <div className="w-full max-w-2xl grid md:grid-cols-5 gap-6 animate-fade-in">
         {/* Order Summary */}
-        <Card className="md:col-span-2">
-          <CardHeader><CardTitle className="text-lg">Order Summary</CardTitle></CardHeader>
+        <Card className="md:col-span-2 shadow-lg border-border/60">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <Shield className="h-4 w-4 text-primary" />
+              Order Summary
+            </CardTitle>
+          </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3 text-sm">
-              <div className="flex items-start gap-2">
-                <Briefcase className="h-4 w-4 text-primary mt-0.5" />
-                <div><p className="text-muted-foreground">Role</p><p className="font-medium">{role}</p></div>
+              <div className="flex items-start gap-3 p-2.5 rounded-lg bg-muted/50">
+                <Briefcase className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                <div><p className="text-xs text-muted-foreground">Role</p><p className="font-semibold">{role}</p></div>
               </div>
               {domain && (
-                <div className="flex items-start gap-2">
-                  <Layers className="h-4 w-4 text-primary mt-0.5" />
-                  <div><p className="text-muted-foreground">Domain</p><p className="font-medium">{domain}</p></div>
+                <div className="flex items-start gap-3 p-2.5 rounded-lg bg-muted/50">
+                  <Layers className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                  <div><p className="text-xs text-muted-foreground">Domain</p><p className="font-semibold">{domain}</p></div>
                 </div>
               )}
-              <div className="flex items-start gap-2">
-                <Clock className="h-4 w-4 text-primary mt-0.5" />
-                <div><p className="text-muted-foreground">Experience</p><p className="font-medium">{experience}</p></div>
+              <div className="flex items-start gap-3 p-2.5 rounded-lg bg-muted/50">
+                <Clock className="h-4 w-4 text-primary mt-0.5 shrink-0" />
+                <div><p className="text-xs text-muted-foreground">Experience</p><p className="font-semibold">{experience || "Not specified"}</p></div>
               </div>
             </div>
             <hr className="border-border" />
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">Interview Session</span><span>$5</span></div>
-              <div className="flex justify-between"><span className="text-muted-foreground">AI Feedback Report</span><span>Included</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Interview Session</span><span className="font-medium">$5</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">AI Feedback Report</span><span className="text-success font-medium">Included</span></div>
               <hr className="border-border" />
-              <div className="flex justify-between font-bold text-base"><span>Total</span><span>$5</span></div>
+              <div className="flex justify-between font-bold text-lg pt-1"><span>Total</span><span className="text-primary">$5</span></div>
             </div>
-            <div className="space-y-1.5 text-xs text-muted-foreground">
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-success" /> 15 AI-powered questions</div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-success" /> Detailed scoring & feedback</div>
-              <div className="flex items-center gap-1.5"><CheckCircle2 className="h-3.5 w-3.5 text-success" /> Performance insights</div>
+            <div className="space-y-2 text-xs text-muted-foreground pt-2">
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-success shrink-0" /> 15 AI-powered questions</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-success shrink-0" /> Detailed scoring & feedback</div>
+              <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-success shrink-0" /> Performance insights</div>
             </div>
           </CardContent>
         </Card>
 
         {/* Payment Form */}
-        <Card className="md:col-span-3">
-          <CardHeader><CardTitle className="text-lg">Payment</CardTitle></CardHeader>
+        <Card className="md:col-span-3 shadow-lg border-border/60">
+          <CardHeader className="pb-3">
+            <CardTitle className="text-lg flex items-center gap-2">
+              <CreditCard className="h-4 w-4 text-primary" />
+              Payment
+            </CardTitle>
+          </CardHeader>
           <CardContent>
             <Tabs defaultValue="card">
               <TabsList className="grid w-full grid-cols-2 mb-6">
@@ -78,24 +87,46 @@ const Payment = () => {
               </TabsList>
 
               <TabsContent value="card" className="space-y-4">
-                <div><Label>Card Number</Label><Input placeholder="1234 5678 9012 3456" /></div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div><Label>Expiry</Label><Input placeholder="MM/YY" /></div>
-                  <div><Label>CVV</Label><Input placeholder="123" type="password" /></div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Card Number</Label>
+                  <Input placeholder="1234 5678 9012 3456" className="py-5" />
                 </div>
-                <div><Label>Cardholder Name</Label><Input placeholder="Name on card" /></div>
-                <Button className="w-full gradient-primary text-primary-foreground py-5 font-semibold" onClick={handlePayment} disabled={processing}>
-                  {processing ? "Processing..." : "Pay $5"}
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2"><Label className="text-sm font-medium">Expiry</Label><Input placeholder="MM/YY" className="py-5" /></div>
+                  <div className="space-y-2"><Label className="text-sm font-medium">CVV</Label><Input placeholder="123" type="password" className="py-5" /></div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">Cardholder Name</Label>
+                  <Input placeholder="Name on card" className="py-5" />
+                </div>
+                <Button
+                  className="w-full gradient-primary text-primary-foreground py-6 font-bold text-base rounded-xl shadow-lg hover:shadow-xl transition-all"
+                  onClick={handlePayment}
+                  disabled={processing}
+                >
+                  {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay $5"}
                 </Button>
               </TabsContent>
 
               <TabsContent value="upi" className="space-y-4">
-                <div><Label>UPI ID</Label><Input placeholder="yourname@upi" /></div>
-                <Button className="w-full gradient-primary text-primary-foreground py-5 font-semibold" onClick={handlePayment} disabled={processing}>
-                  {processing ? "Processing..." : "Pay $5 via UPI"}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">UPI ID</Label>
+                  <Input placeholder="yourname@upi" className="py-5" />
+                </div>
+                <Button
+                  className="w-full gradient-primary text-primary-foreground py-6 font-bold text-base rounded-xl shadow-lg hover:shadow-xl transition-all"
+                  onClick={handlePayment}
+                  disabled={processing}
+                >
+                  {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay $5 via UPI"}
                 </Button>
               </TabsContent>
             </Tabs>
+
+            <p className="text-center text-xs text-muted-foreground mt-4 flex items-center justify-center gap-1.5">
+              <Shield className="h-3.5 w-3.5" />
+              Secured with 256-bit SSL encryption
+            </p>
           </CardContent>
         </Card>
       </div>

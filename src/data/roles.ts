@@ -63,7 +63,7 @@ const ROLE_CATEGORY: Record<string, string[]> = {
   ENGINEERING: ["Mechanical Engineer","Civil Engineer","Electrical Engineer","Electronics Engineer"],
   MANAGEMENT: ["Product Manager","Product Owner","Business Analyst","Project Manager","Scrum Master","HR Manager","Recruiter","Operations Manager","Sales Executive","Sales Manager","Marketing Manager","Supply Chain Manager","Warehouse Manager","Logistics Coordinator","Store Manager","Hospitality Manager"],
   CREATIVE: ["UI Designer","UX Designer","Digital Marketing Specialist","Content Writer","Graphic Designer","Video Editor","Journalist","Virtual Assistant"],
-  DEFENSE: ["Army Officer","Navy Officer","Air Force Officer","Pilot","Cabin Crew","Ground Staff"],
+  DEFENSE: ["Army Officer","Navy Officer","Air Force Officer","Pilot","Cabin Crew","Ground Staff","NDA Cadet","CDS Officer","AFCAT Officer","INET Officer","TES Officer (Army)","TGC Officer (Army)","SSC Tech Officer (Army)","NCC Special Entry Officer","JAG Officer (Army)","UES Officer","AFCAT Flying Branch Officer","AFCAT Ground Duty Officer","Navy Executive Branch Officer","Navy Engineering Branch Officer","Navy Electrical Branch Officer"],
 };
 
 const CATEGORY_DOMAINS: DomainMap = {

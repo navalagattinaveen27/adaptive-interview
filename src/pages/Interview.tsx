@@ -36,7 +36,7 @@ const Interview = () => {
   const [answer, setAnswer] = useState("");
   const [isSpeakingQuestion, setIsSpeakingQuestion] = useState(false);
   const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<any>(null);
 
   const progress = ((currentQ + 1) / questions.length) * 100;
 
@@ -61,7 +61,7 @@ const Interview = () => {
     const SpeechRecognitionCtor = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognitionCtor) return;
 
-    const recognition = new SpeechRecognitionCtor() as SpeechRecognition;
+    const recognition = new SpeechRecognitionCtor();
     recognition.continuous = true;
     recognition.interimResults = true;
     recognition.lang = "en-US";

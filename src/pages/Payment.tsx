@@ -58,10 +58,11 @@ const Payment = () => {
             </div>
             <hr className="border-border" />
             <div className="space-y-2 text-sm">
-              <div className="flex justify-between"><span className="text-muted-foreground">Interview Session</span><span className="font-medium">$5</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">Interview Session</span><span className="font-medium">₹375.00</span></div>
+              <div className="flex justify-between"><span className="text-muted-foreground">GST (18%)</span><span className="font-medium">₹67.50</span></div>
               <div className="flex justify-between"><span className="text-muted-foreground">AI Feedback Report</span><span className="text-success font-medium">Included</span></div>
               <hr className="border-border" />
-              <div className="flex justify-between font-bold text-lg pt-1"><span>Total</span><span className="text-primary">$5</span></div>
+              <div className="flex justify-between font-bold text-lg pt-1"><span>Total</span><span className="text-primary">₹442.50</span></div>
             </div>
             <div className="space-y-2 text-xs text-muted-foreground pt-2">
               <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-success shrink-0" /> 15 AI-powered questions</div>
@@ -104,7 +105,7 @@ const Payment = () => {
                   onClick={handlePayment}
                   disabled={processing}
                 >
-                  {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay $5"}
+                   {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay ₹442.50"}
                 </Button>
               </TabsContent>
 
@@ -118,7 +119,7 @@ const Payment = () => {
                   onClick={handlePayment}
                   disabled={processing}
                 >
-                  {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay $5 via UPI"}
+                  {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay ₹442.50 via UPI"}
                 </Button>
               </TabsContent>
             </Tabs>

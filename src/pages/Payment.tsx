@@ -105,7 +105,7 @@ const Payment = () => {
                   onClick={handlePayment}
                   disabled={processing}
                 >
-                  {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay $5"}
+                   {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay ₹442.50"}
                 </Button>
               </TabsContent>
 
@@ -119,7 +119,7 @@ const Payment = () => {
                   onClick={handlePayment}
                   disabled={processing}
                 >
-                  {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay $5 via UPI"}
+                  {processing ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Processing...</> : "Pay ₹442.50 via UPI"}
                 </Button>
               </TabsContent>
             </Tabs>

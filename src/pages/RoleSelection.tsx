@@ -66,7 +66,18 @@ const RoleSelection = () => {
           value={show ? search : value || search}
           onChange={(e) => { setSearch(e.target.value); setShow(true); onSelect(e.target.value); }}
           onFocus={() => setShow(true)}
-          onBlur={() => setTimeout(() => setShow(false), 200)}
+          onBlur={(e) => {
+            const container = e.currentTarget.closest('.relative');
+            const relatedTarget = e.relatedTarget as Node | null;
+            if (container && relatedTarget && container.contains(relatedTarget)) return;
+            setTimeout(() => setShow(false), 150);
+          }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === 'Tab') {
+              setShow(false);
+              if (search && !value) onSelect(search);
+            }
+          }}
         />
         {show && items.length > 0 && (
           <div className="absolute z-50 mt-1 w-full max-h-60 overflow-auto rounded-lg border border-border bg-card shadow-lg">
@@ -74,8 +85,9 @@ const RoleSelection = () => {
               <button
                 key={item}
                 type="button"
+                tabIndex={-1}
                 className="w-full text-left px-4 py-2.5 text-sm hover:bg-muted transition-colors"
-                onMouseDown={() => { onSelect(item); setSearch(""); setShow(false); }}
+                onMouseDown={(e) => { e.preventDefault(); onSelect(item); setSearch(""); setShow(false); }}
               >
                 {item}
               </button>

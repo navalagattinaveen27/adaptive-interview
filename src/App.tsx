@@ -14,6 +14,7 @@ import Payment from "./pages/Payment";
 import Interview from "./pages/Interview";
 import DeviceCheck from "./pages/DeviceCheck";
 import Feedback from "./pages/Feedback";
+import Help from "./pages/Help";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -39,6 +40,7 @@ const AppRoutes = () => (
       <Route path="/device-check" element={<ProtectedRoute><DeviceCheck /></ProtectedRoute>} />
       <Route path="/interview" element={<ProtectedRoute><Interview /></ProtectedRoute>} />
       <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
+      <Route path="/help" element={<ProtectedRoute><Help /></ProtectedRoute>} />
       <Route path="*" element={<NotFound />} />
     </Routes>
     <Footer />

@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { LogOut, LayoutDashboard, User } from "lucide-react";
+import { LogOut, LayoutDashboard, User, HelpCircle } from "lucide-react";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -27,6 +27,12 @@ const Navbar = () => {
                 <Link to="/dashboard">
                   <LayoutDashboard className="mr-1.5 h-4 w-4" />
                   Dashboard
+                </Link>
+              </Button>
+              <Button variant="ghost" size="sm" asChild>
+                <Link to="/help">
+                  <HelpCircle className="mr-1.5 h-4 w-4" />
+                  Help
                 </Link>
               </Button>
               <span className="hidden sm:flex items-center gap-1.5 text-sm text-muted-foreground px-2">

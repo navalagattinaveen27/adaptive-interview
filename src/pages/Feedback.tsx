@@ -23,6 +23,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface CategoryScore {
   name: string;
@@ -34,9 +35,10 @@ interface CategoryScore {
 
 const Feedback = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const role = sessionStorage.getItem("interview_role") || "General";
   const answers = JSON.parse(sessionStorage.getItem("interview_answers") || "[]");
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(user?.email || "");
   const [sendingEmail, setSendingEmail] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
 

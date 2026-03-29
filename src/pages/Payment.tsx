@@ -83,6 +83,14 @@ const Payment = () => {
                   <p className="text-xs font-medium text-primary">
                     {plan.questionsRange[0]}–{plan.questionsRange[1]} questions
                   </p>
+                  <div className="text-left space-y-1.5 pt-2 border-t border-border/60">
+                    {PLAN_FEATURES.map((feature) => (
+                      <div key={feature} className="flex items-start gap-1.5 text-[11px]">
+                        <CheckCircle2 className="h-3 w-3 text-success shrink-0 mt-0.5" />
+                        <span className="text-muted-foreground">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                   {selectedPlan.id === plan.id && (
                     <CheckCircle2 className="h-5 w-5 text-primary mx-auto" />
                   )}
@@ -195,20 +203,6 @@ const Payment = () => {
           </Card>
         </div>
 
-        {/* Features included */}
-        <Card className="border-border/60">
-          <CardContent className="py-6">
-            <h3 className="text-center font-bold text-sm mb-4 text-muted-foreground uppercase tracking-wider">All Plans Include</h3>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              {PLAN_FEATURES.map((feature) => (
-                <div key={feature} className="flex items-start gap-2 text-xs">
-                  <CheckCircle2 className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
-                  <span className="text-muted-foreground">{feature}</span>
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

@@ -171,6 +171,14 @@ const Index = () => {
                   <div className="text-sm font-medium text-foreground">
                     {plan.questionsRange[0]}–{plan.questionsRange[1]} AI-powered questions
                   </div>
+                  <div className="text-left space-y-2 pt-2 border-t border-border/60">
+                    {PLAN_FEATURES.map((feature) => (
+                      <div key={feature} className="flex items-start gap-2 text-xs">
+                        <CheckCircle2 className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
+                        <span className="text-muted-foreground">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
                   <Button
                     className={`w-full py-5 font-bold rounded-xl ${
                       plan.popular
@@ -187,20 +195,6 @@ const Index = () => {
             ))}
           </div>
 
-          {/* Features list */}
-          <Card className="border-border/60">
-            <CardContent className="py-8">
-              <h3 className="text-center font-bold text-lg mb-6">All Plans Include</h3>
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                {PLAN_FEATURES.map((feature) => (
-                  <div key={feature} className="flex items-start gap-2.5 text-sm">
-                    <CheckCircle2 className="h-4 w-4 text-success shrink-0 mt-0.5" />
-                    <span className="text-muted-foreground">{feature}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
         </div>
       </section>
 
@@ -244,7 +238,7 @@ const Index = () => {
               className="gradient-primary text-primary-foreground px-10 py-7 rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
               onClick={() => handleStart()}
             >
-              Get Started Free <ChevronRight className="ml-1 h-5 w-5" />
+              Get Started <ChevronRight className="ml-1 h-5 w-5" />
             </Button>
           </div>
         </div>

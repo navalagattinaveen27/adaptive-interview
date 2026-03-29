@@ -18,8 +18,8 @@ export const PRICING_PLANS: PricingPlan[] = [
     price: 250,
     gst: 45,
     total: 295,
-    questionsRange: [6, 7],
-    questionCount: 7,
+    questionsRange: [10, 12],
+    questionCount: 12,
   },
   {
     id: "standard",
@@ -28,8 +28,8 @@ export const PRICING_PLANS: PricingPlan[] = [
     price: 375,
     gst: 67.5,
     total: 442.5,
-    questionsRange: [10, 12],
-    questionCount: 12,
+    questionsRange: [15, 18],
+    questionCount: 18,
     popular: true,
   },
   {
@@ -39,8 +39,8 @@ export const PRICING_PLANS: PricingPlan[] = [
     price: 650,
     gst: 117,
     total: 767,
-    questionsRange: [18, 20],
-    questionCount: 20,
+    questionsRange: [20, 25],
+    questionCount: 25,
   },
 ];
 

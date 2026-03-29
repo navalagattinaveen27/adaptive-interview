@@ -48,11 +48,11 @@ export const PLAN_FEATURES = [
   "Simulate unlimited mock interviews",
   "Analyze all recorded interviews",
   "Interview for any job position",
-  "Upload resume and job description for tailored questions",
   "Get AI-powered feedback on interview performance",
   "Access to full interview training program",
   "Share mock interviews for feedback",
   "Create your own custom interviews",
+  "Track activity with admin dashboard",
 ];
 
 export function getPlanById(id: string): PricingPlan | undefined {

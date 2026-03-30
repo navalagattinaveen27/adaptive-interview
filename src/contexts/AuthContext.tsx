@@ -4,6 +4,7 @@ interface User {
   id: string;
   name: string;
   email: string;
+  phone?: string;
 }
 
 interface AuthContextType {
@@ -11,7 +12,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   login: (email: string, password: string) => Promise<void>;
   loginWithGoogle: () => Promise<void>;
-  signup: (name: string, email: string, password: string) => Promise<void>;
+  signup: (name: string, email: string, password: string, phone?: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -30,7 +31,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
 
   const login = useCallback(async (email: string, _password: string) => {
-    // Mock login - will be replaced with Supabase
     const mockUser: User = {
       id: crypto.randomUUID(),
       name: email.split("@")[0],
@@ -50,8 +50,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUser(mockUser);
   }, []);
 
-  const signup = useCallback(async (name: string, email: string, _password: string) => {
-    const mockUser: User = { id: crypto.randomUUID(), name, email };
+  const signup = useCallback(async (name: string, email: string, _password: string, phone?: string) => {
+    const mockUser: User = { id: crypto.randomUUID(), name, email, phone };
     sessionStorage.setItem("interview_user", JSON.stringify(mockUser));
     setUser(mockUser);
   }, []);
@@ -61,6 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.removeItem("interview_role");
     sessionStorage.removeItem("interview_domain");
     sessionStorage.removeItem("interview_experience");
+    sessionStorage.removeItem("interview_company");
     setUser(null);
   }, []);
 

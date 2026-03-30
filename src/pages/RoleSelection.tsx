@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ROLES, getDomainsForRole, EXPERIENCE_OPTIONS } from "@/data/roles";
-import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2 } from "lucide-react";
+import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2, Building2 } from "lucide-react";
 
 interface DropdownInputProps {
   label: string;
@@ -86,6 +86,8 @@ const RoleSelection = () => {
   const [expSearch, setExpSearch] = useState("");
   const [showExpDropdown, setShowExpDropdown] = useState(false);
 
+  const [company, setCompany] = useState("");
+
   const domains = useMemo(() => getDomainsForRole(role), [role]);
 
   const filteredRoles = useMemo(() => {
@@ -109,6 +111,7 @@ const RoleSelection = () => {
     sessionStorage.setItem("interview_role", role);
     sessionStorage.setItem("interview_domain", domain);
     sessionStorage.setItem("interview_experience", experience);
+    sessionStorage.setItem("interview_company", company);
     navigate("/payment");
   };
 
@@ -162,12 +165,29 @@ const RoleSelection = () => {
             placeholder="Select or type experience..."
           />
 
+          {/* Target Company */}
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2 text-sm font-semibold">
+              <Building2 className="h-4 w-4 text-primary" /> Target Company (Optional)
+            </Label>
+            <div className="relative">
+              <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                className="pl-9 py-5 transition-shadow focus:shadow-md"
+                placeholder="e.g. Google, TCS, Infosys..."
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+              />
+            </div>
+          </div>
+
           {canProceed && (
             <div className="rounded-xl bg-primary/5 border border-primary/15 p-4 space-y-1.5 text-sm">
               <p className="font-semibold text-primary text-xs uppercase tracking-wider mb-2">Your Selection</p>
               <p><span className="text-muted-foreground">Role:</span> <span className="font-semibold">{role}</span></p>
               {domain && <p><span className="text-muted-foreground">Domain:</span> <span className="font-semibold">{domain}</span></p>}
               {experience && <p><span className="text-muted-foreground">Experience:</span> <span className="font-semibold">{experience}</span></p>}
+              {company && <p><span className="text-muted-foreground">Company:</span> <span className="font-semibold">{company}</span></p>}
             </div>
           )}
 

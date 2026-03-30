@@ -1,3 +1,9 @@
+export interface WrittenQuestionConfig {
+  initialCount: number;
+  maxTimeMinutes: number;
+  bonusThresholdMinutes: number; // if completed before this many minutes, give bonus question
+}
+
 export interface PricingPlan {
   id: string;
   name: string;
@@ -8,6 +14,7 @@ export interface PricingPlan {
   questionsRange: [number, number]; // min, max
   questionCount: number; // actual count used in interview
   popular?: boolean;
+  writtenQuestions: WrittenQuestionConfig;
 }
 
 export const PRICING_PLANS: PricingPlan[] = [
@@ -20,6 +27,11 @@ export const PRICING_PLANS: PricingPlan[] = [
     total: 295,
     questionsRange: [10, 12],
     questionCount: 12,
+    writtenQuestions: {
+      initialCount: 1,
+      maxTimeMinutes: 7,
+      bonusThresholdMinutes: 2,
+    },
   },
   {
     id: "standard",
@@ -31,6 +43,11 @@ export const PRICING_PLANS: PricingPlan[] = [
     questionsRange: [15, 18],
     questionCount: 18,
     popular: true,
+    writtenQuestions: {
+      initialCount: 2,
+      maxTimeMinutes: 12,
+      bonusThresholdMinutes: 2,
+    },
   },
   {
     id: "premium",
@@ -41,6 +58,11 @@ export const PRICING_PLANS: PricingPlan[] = [
     total: 767,
     questionsRange: [20, 25],
     questionCount: 25,
+    writtenQuestions: {
+      initialCount: 3,
+      maxTimeMinutes: 20,
+      bonusThresholdMinutes: 2,
+    },
   },
 ];
 

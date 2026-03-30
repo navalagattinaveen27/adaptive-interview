@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Brain, BarChart3, MessageSquare, ChevronRight, Sparkles, Target, TrendingUp, ArrowRight, Zap, Clock, CheckCircle2, Crown } from "lucide-react";
+import { Brain, BarChart3, MessageSquare, ChevronRight, Sparkles, Target, TrendingUp, ArrowRight, Zap, Clock, CheckCircle2, Crown, Phone } from "lucide-react";
 import { PRICING_PLANS, PLAN_FEATURES } from "@/data/pricing";
 
 const features = [
@@ -64,7 +64,7 @@ const Index = () => {
               className="gradient-accent text-accent-foreground text-base px-10 py-7 rounded-xl font-bold shadow-xl hover:shadow-2xl hover:scale-[1.02] transition-all duration-300"
               onClick={() => handleStart()}
             >
-              Start Interview <ChevronRight className="ml-1 h-5 w-5" />
+              Get Started <ChevronRight className="ml-1 h-5 w-5" />
             </Button>
             <Button
               size="lg"
@@ -124,7 +124,7 @@ const Index = () => {
 
       {/* Pricing */}
       <section id="pricing" className="py-20 md:py-28">
-        <div className="container max-w-5xl">
+        <div className="container max-w-6xl">
           <div className="text-center mb-14">
             <div className="inline-flex items-center gap-2 text-primary text-sm font-semibold mb-3">
               <Crown className="h-4 w-4" /> PRICING
@@ -133,7 +133,7 @@ const Index = () => {
             <p className="text-muted-foreground max-w-xl mx-auto">Pay per session — no subscriptions required. All plans include the same powerful features.</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {PRICING_PLANS.map((plan) => (
               <Card
                 key={plan.id}
@@ -193,6 +193,49 @@ const Index = () => {
                 </CardContent>
               </Card>
             ))}
+
+            {/* Custom / Enterprise Card */}
+            <Card className="relative overflow-hidden border-border/60 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 bg-muted/30">
+              <CardHeader className="text-center pb-2 pt-8">
+                <CardTitle className="text-lg font-bold">Custom Package</CardTitle>
+                <div className="flex items-center justify-center gap-1.5 text-muted-foreground text-sm mt-1">
+                  <Phone className="h-4 w-4" /> Tailored for you
+                </div>
+              </CardHeader>
+              <CardContent className="text-center space-y-5 pb-8">
+                <div>
+                  <div className="text-3xl font-extrabold text-foreground">
+                    Let's Talk
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Custom pricing for your needs
+                  </p>
+                </div>
+                <div className="text-sm font-medium text-foreground">
+                  Custom duration & questions
+                </div>
+                <div className="text-left space-y-2 pt-2 border-t border-border/60">
+                  {[
+                    ...PLAN_FEATURES,
+                    "Dedicated support & onboarding",
+                    "Custom question banks",
+                    "Team & bulk pricing",
+                  ].map((feature) => (
+                    <div key={feature} className="flex items-start gap-2 text-xs">
+                      <CheckCircle2 className="h-3.5 w-3.5 text-success shrink-0 mt-0.5" />
+                      <span className="text-muted-foreground">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+                <Button
+                  className="w-full py-5 font-bold rounded-xl"
+                  variant="outline"
+                  onClick={() => window.location.href = "mailto:contact@adaptiveinterview.com?subject=Custom%20Package%20Inquiry"}
+                >
+                  Contact Us <ChevronRight className="ml-1 h-4 w-4" />
+                </Button>
+              </CardContent>
+            </Card>
           </div>
 
         </div>

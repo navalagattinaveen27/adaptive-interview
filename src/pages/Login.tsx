@@ -7,7 +7,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { Lock, Mail, User, Sparkles } from "lucide-react";
+import { Lock, Mail, User, Sparkles, Phone } from "lucide-react";
 
 const Login = () => {
   const { login, signup, loginWithGoogle } = useAuth();
@@ -34,7 +34,12 @@ const Login = () => {
     setLoading(true);
     const fd = new FormData(e.currentTarget);
     try {
-      await signup(fd.get("name") as string, fd.get("email") as string, fd.get("password") as string);
+      await signup(
+        fd.get("name") as string,
+        fd.get("email") as string,
+        fd.get("password") as string,
+        fd.get("phone") as string
+      );
       sessionStorage.removeItem("redirect_after_login");
       toast.success("Account created!");
       navigate(redirect);
@@ -116,6 +121,13 @@ const Login = () => {
                   <div className="relative">
                     <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input id="signup-email" name="email" type="email" required className="pl-9" placeholder="you@example.com" />
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="signup-phone" className="text-sm font-medium">Phone Number</Label>
+                  <div className="relative">
+                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                    <Input id="signup-phone" name="phone" type="tel" required className="pl-9" placeholder="+91 98765 43210" />
                   </div>
                 </div>
                 <div className="space-y-2">

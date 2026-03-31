@@ -235,7 +235,7 @@ const Interview = () => {
       </div>
 
       {/* Input area */}
-      <div className="border-t border-border/60 bg-card/80 backdrop-blur-sm">
+      <div className="border-t border-border/60 bg-card/80 backdrop-blur-sm" onKeyDown={(e) => { if (e.key === "Enter" && answer.trim()) handleSubmitAnswer(); }}>
         <div className="container max-w-3xl py-4 px-4">
           <div className="flex items-center gap-3">
             <Button

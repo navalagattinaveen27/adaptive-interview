@@ -2,21 +2,10 @@ import { useState, useRef, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { ChevronRight, Briefcase, Clock, Layers, Volume2, VolumeX, Mic, MicOff, Send, PenLine, FileText } from "lucide-react";
+import { ChevronRight, Briefcase, Clock, Layers, Volume2, VolumeX, Mic, MicOff, Send } from "lucide-react";
 import { getPlanById, PRICING_PLANS } from "@/data/pricing";
 import ChatBubble from "@/components/interview/ChatBubble";
-import WrittenQuestionsPhase from "@/components/interview/WrittenQuestionsPhase";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
 const generateQuestions = (role: string, count: number): string[] => {
   const allQuestions = [
@@ -49,8 +38,6 @@ const generateQuestions = (role: string, count: number): string[] => {
   return allQuestions.slice(0, Math.min(count, allQuestions.length));
 };
 
-type InterviewPhase = "pre-prompt" | "written" | "verbal";
-
 interface ChatMessage {
   type: "ai" | "user";
   text: string;
@@ -65,10 +52,6 @@ const Interview = () => {
   const planId = sessionStorage.getItem("selected_plan") || "standard";
   const plan = getPlanById(planId) || PRICING_PLANS[1];
 
-  const [phase, setPhase] = useState<InterviewPhase>("pre-prompt");
-  const [includeWritten, setIncludeWritten] = useState(false);
-  const [writtenAnswers, setWrittenAnswers] = useState<{ question: string; answer: string }[]>([]);
-
   const [questions] = useState(() => generateQuestions(role, plan.questionCount));
   const [currentQ, setCurrentQ] = useState(0);
   const [answers, setAnswers] = useState<string[]>(Array(questions.length).fill(""));
@@ -76,6 +59,7 @@ const Interview = () => {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   const [isSpeakingQuestion, setIsSpeakingQuestion] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [waitingForUser, setWaitingForUser] = useState(false);
   const recognitionRef = useRef<any>(null);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -87,29 +71,47 @@ const Interview = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chatHistory]);
 
-  // Add first question to chat when verbal phase starts
-  useEffect(() => {
-    if (phase === "verbal" && chatHistory.length === 0) {
-      setChatHistory([{ type: "ai", text: questions[0] }]);
-    }
-  }, [phase, chatHistory.length, questions]);
-
-  const speakQuestion = useCallback(() => {
+  // Speak the current question automatically when it appears
+  const speakAndWait = useCallback((questionText: string) => {
     window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(questions[currentQ]);
+    const utterance = new SpeechSynthesisUtterance(questionText);
     utterance.rate = 0.95;
     utterance.onstart = () => setIsSpeakingQuestion(true);
-    utterance.onend = () => setIsSpeakingQuestion(false);
-    utterance.onerror = () => setIsSpeakingQuestion(false);
+    utterance.onend = () => {
+      setIsSpeakingQuestion(false);
+      // Auto-start listening after question is read
+      setWaitingForUser(true);
+    };
+    utterance.onerror = () => {
+      setIsSpeakingQuestion(false);
+      setWaitingForUser(true);
+    };
     window.speechSynthesis.speak(utterance);
-  }, [currentQ, questions]);
+  }, []);
+
+  // Start interview: add first question and speak it
+  useEffect(() => {
+    if (chatHistory.length === 0) {
+      const firstQ = questions[0];
+      setChatHistory([{ type: "ai", text: firstQ }]);
+      speakAndWait(firstQ);
+    }
+  }, [chatHistory.length, questions, speakAndWait]);
+
+  // Auto-start mic when waiting for user (after TTS finishes)
+  useEffect(() => {
+    if (waitingForUser && !isListening) {
+      startListeningInternal();
+      setWaitingForUser(false);
+    }
+  }, [waitingForUser, isListening]);
 
   const stopSpeaking = useCallback(() => {
     window.speechSynthesis.cancel();
     setIsSpeakingQuestion(false);
   }, []);
 
-  const startListening = useCallback(() => {
+  const startListeningInternal = useCallback(() => {
     const SpeechRecognitionCtor = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
     if (!SpeechRecognitionCtor) return;
 
@@ -118,7 +120,7 @@ const Interview = () => {
     recognition.interimResults = true;
     recognition.lang = "en-US";
 
-    let finalTranscript = answer;
+    let finalTranscript = "";
 
     recognition.onresult = (event: SpeechRecognitionEvent) => {
       let interim = "";
@@ -139,7 +141,12 @@ const Interview = () => {
     recognitionRef.current = recognition;
     recognition.start();
     setIsListening(true);
-  }, [answer]);
+  }, []);
+
+  const startListening = useCallback(() => {
+    setAnswer("");
+    startListeningInternal();
+  }, [startListeningInternal]);
 
   const stopListening = useCallback(() => {
     recognitionRef.current?.stop();
@@ -162,7 +169,6 @@ const Interview = () => {
     updated[currentQ] = trimmed;
     setAnswers(updated);
 
-    // Add user answer to chat
     if (trimmed) {
       setChatHistory((prev) => [...prev, { type: "user", text: trimmed }]);
     }
@@ -170,84 +176,21 @@ const Interview = () => {
     if (currentQ < questions.length - 1) {
       const nextQ = currentQ + 1;
       setCurrentQ(nextQ);
-      setAnswer(answers[nextQ] || "");
-      // Add next AI question
-      setChatHistory((prev) => [...prev, { type: "ai", text: questions[nextQ] }]);
+      setAnswer("");
+
+      // Add next question and speak it
+      const nextQuestion = questions[nextQ];
+      setChatHistory((prev) => [...prev, { type: "ai", text: nextQuestion }]);
+      speakAndWait(nextQuestion);
     } else {
       sessionStorage.setItem("interview_answers", JSON.stringify(updated));
       sessionStorage.setItem("interview_questions", JSON.stringify(questions));
-      if (writtenAnswers.length > 0) {
-        sessionStorage.setItem("written_answers", JSON.stringify(writtenAnswers));
-      }
       navigate("/feedback");
     }
   };
 
   const isLastQuestion = currentQ === questions.length - 1;
 
-  // Pre-prompt dialog
-  if (phase === "pre-prompt") {
-    return (
-      <div className="flex-1 flex items-center justify-center py-12 px-4 bg-gradient-to-b from-primary/5 via-background to-background min-h-screen">
-        <Dialog open onOpenChange={() => {}}>
-          <DialogContent className="sm:max-w-md" onPointerDownOutside={(e) => e.preventDefault()}>
-            <DialogHeader>
-              <DialogTitle className="flex items-center gap-2">
-                <PenLine className="h-5 w-5 text-primary" />
-                Written Assessment
-              </DialogTitle>
-              <DialogDescription>
-                Would you like to include written questions before the verbal interview?
-                Based on your <span className="font-semibold text-foreground">{plan.name}</span> plan,
-                you'll get {plan.writtenQuestions.initialCount} written question{plan.writtenQuestions.initialCount > 1 ? "s" : ""} with
-                up to {plan.writtenQuestions.maxTimeMinutes} minutes total.
-                Complete early to earn bonus questions!
-              </DialogDescription>
-            </DialogHeader>
-            <DialogFooter className="flex-col sm:flex-row gap-2">
-              <Button
-                variant="outline"
-                className="flex-1"
-                onClick={() => {
-                  setIncludeWritten(false);
-                  setPhase("verbal");
-                }}
-              >
-                <FileText className="mr-2 h-4 w-4" />
-                Skip, go verbal only
-              </Button>
-              <Button
-                className="flex-1 gradient-primary text-primary-foreground"
-                onClick={() => {
-                  setIncludeWritten(true);
-                  setPhase("written");
-                }}
-              >
-                <PenLine className="mr-2 h-4 w-4" />
-                Include Written Questions
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-    );
-  }
-
-  // Written questions phase
-  if (phase === "written") {
-    return (
-      <WrittenQuestionsPhase
-        config={plan.writtenQuestions}
-        role={role}
-        onComplete={(results) => {
-          setWrittenAnswers(results);
-          setPhase("verbal");
-        }}
-      />
-    );
-  }
-
-  // Verbal interview - chat style
   return (
     <div className="flex-1 flex flex-col bg-gradient-to-b from-primary/5 via-background to-background min-h-screen">
       {/* Top bar */}
@@ -265,11 +208,6 @@ const Interview = () => {
             <span className="inline-flex items-center gap-1.5 rounded-full bg-muted text-muted-foreground px-3 py-1 text-xs">
               <Clock className="h-3.5 w-3.5" /> {plan.name} ({plan.duration} min)
             </span>
-            {includeWritten && writtenAnswers.length > 0 && (
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-accent/10 text-accent px-3 py-1 text-xs">
-                <PenLine className="h-3.5 w-3.5" /> {writtenAnswers.length} written done
-              </span>
-            )}
           </div>
           <div className="space-y-1">
             <div className="flex justify-between text-xs">
@@ -299,13 +237,13 @@ const Interview = () => {
       {/* Input area */}
       <div className="border-t border-border/60 bg-card/80 backdrop-blur-sm">
         <div className="container max-w-3xl py-4 px-4">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3">
             <Button
               variant="ghost"
               size="icon"
               className={`shrink-0 rounded-xl ${isSpeakingQuestion ? "bg-primary/10" : ""}`}
-              onClick={isSpeakingQuestion ? stopSpeaking : speakQuestion}
-              title={isSpeakingQuestion ? "Stop reading" : "Read question aloud"}
+              onClick={isSpeakingQuestion ? stopSpeaking : () => speakAndWait(questions[currentQ])}
+              title={isSpeakingQuestion ? "Stop reading" : "Repeat question"}
             >
               {isSpeakingQuestion ? (
                 <VolumeX className="h-5 w-5 text-primary" />
@@ -314,29 +252,24 @@ const Interview = () => {
               )}
             </Button>
 
-            <div className="relative flex-1">
-              <Textarea
-                placeholder="Type your answer or use the mic..."
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-                rows={2}
-                className="resize-none text-sm pr-12 min-h-[52px] max-h-32"
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault();
-                    if (answer.trim()) handleSubmitAnswer();
-                  }
-                }}
-              />
-              <Button
-                variant="ghost"
-                size="icon"
-                className={`absolute right-2 bottom-1.5 rounded-lg ${isListening ? "bg-destructive/10 text-destructive animate-pulse" : "text-muted-foreground hover:text-primary"}`}
-                onClick={isListening ? stopListening : startListening}
-                title={isListening ? "Stop recording" : "Answer with voice"}
-              >
-                {isListening ? <MicOff className="h-4 w-4" /> : <Mic className="h-4 w-4" />}
-              </Button>
+            <Button
+              variant={isListening ? "destructive" : "outline"}
+              size="icon"
+              className={`shrink-0 rounded-xl h-[52px] w-[52px] ${isListening ? "animate-pulse" : ""}`}
+              onClick={isListening ? stopListening : startListening}
+              title={isListening ? "Stop recording" : "Start speaking"}
+            >
+              {isListening ? <MicOff className="h-5 w-5" /> : <Mic className="h-5 w-5" />}
+            </Button>
+
+            <div className="flex-1 min-w-0">
+              {answer ? (
+                <p className="text-sm text-foreground truncate">{answer}</p>
+              ) : (
+                <p className="text-sm text-muted-foreground italic">
+                  {isListening ? "Listening... speak your answer" : isSpeakingQuestion ? "Listen to the question..." : "Click mic to answer"}
+                </p>
+              )}
             </div>
 
             <Button
@@ -344,7 +277,7 @@ const Interview = () => {
               className={`shrink-0 rounded-xl h-[52px] w-[52px] ${isLastQuestion ? "gradient-accent text-accent-foreground" : "gradient-primary text-primary-foreground"}`}
               onClick={handleSubmitAnswer}
               disabled={!answer.trim()}
-              title={isLastQuestion ? "Submit Interview" : "Send"}
+              title={isLastQuestion ? "Submit Interview" : "Next Question"}
             >
               {isLastQuestion ? <Send className="h-5 w-5" /> : <ChevronRight className="h-5 w-5" />}
             </Button>
@@ -356,7 +289,7 @@ const Interview = () => {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
               </span>
-              Listening... Speak your answer now
+              Recording... Click the arrow when you're done answering
             </div>
           )}
         </div>

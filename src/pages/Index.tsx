@@ -230,7 +230,7 @@ const Index = () => {
                 <Button
                   className="w-full py-5 font-bold rounded-xl"
                   variant="outline"
-                  onClick={() => window.location.href = "mailto:contact@adaptiveinterview.com?subject=Custom%20Package%20Inquiry"}
+                  onClick={() => navigate("/help")}
                 >
                   Contact Us <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>

@@ -143,6 +143,13 @@ const Login = () => {
               </form>
             </TabsContent>
           </Tabs>
+
+          <p className="text-center text-sm text-muted-foreground mt-4">
+            Need help?{" "}
+            <button type="button" onClick={() => navigate("/help")} className="text-primary hover:underline font-medium">
+              Contact Us
+            </button>
+          </p>
         </CardContent>
       </Card>
     </div>

@@ -221,7 +221,15 @@ const Interview = () => {
       {/* Top bar */}
       <div className="border-b border-border/60 bg-card/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container max-w-4xl py-3 px-4 space-y-3">
-          <div className="flex flex-wrap gap-2 text-sm">
+          <div className="flex flex-wrap gap-2 text-sm items-center">
+            <Button
+              variant="destructive"
+              size="sm"
+              className="rounded-full text-xs gap-1.5"
+              onClick={() => setShowEndConfirm(true)}
+            >
+              <LogOut className="h-3.5 w-3.5" /> End Interview
+            </Button>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 text-primary px-3 py-1 font-semibold text-xs">
               <Briefcase className="h-3.5 w-3.5" /> {role}
             </span>

@@ -42,6 +42,7 @@ const AppRoutes = () => (
       <Route path="/interview" element={<ProtectedRoute><Interview /></ProtectedRoute>} />
       <Route path="/feedback" element={<ProtectedRoute><Feedback /></ProtectedRoute>} />
       <Route path="/help" element={<ProtectedRoute><Help /></ProtectedRoute>} />
+      <Route path="/contact" element={<Contact />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
     <Footer />

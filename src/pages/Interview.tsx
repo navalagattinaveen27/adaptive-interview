@@ -327,6 +327,23 @@ const Interview = () => {
           )}
         </div>
       </div>
+
+      <AlertDialog open={showEndConfirm} onOpenChange={setShowEndConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>End Interview Early?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You've answered {currentQ} of {questions.length} questions. Your feedback report will be generated based on the answers provided so far.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continue Interview</AlertDialogCancel>
+            <AlertDialogAction onClick={handleEndInterview} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              End & Get Report
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

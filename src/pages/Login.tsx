@@ -146,8 +146,8 @@ const Login = () => {
 
           <p className="text-center text-sm text-muted-foreground mt-4">
             Need help?{" "}
-            <button type="button" onClick={() => navigate("/help")} className="text-primary hover:underline font-medium">
-              Contact Us
+             <button type="button" onClick={() => navigate("/contact")} className="text-primary hover:underline font-medium">
+               Contact Us
             </button>
           </p>
         </CardContent>

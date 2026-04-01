@@ -230,7 +230,7 @@ const Index = () => {
                 <Button
                   className="w-full py-5 font-bold rounded-xl"
                   variant="outline"
-                  onClick={() => navigate("/help")}
+                  onClick={() => navigate("/contact")}
                 >
                   Contact Us <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>

@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ChevronRight, Briefcase, Clock, Layers, Volume2, VolumeX, Mic, MicOff, Send } from "lucide-react";
+import { ChevronRight, Briefcase, Clock, Layers, Volume2, VolumeX, Mic, MicOff, Send, LogOut } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { getPlanById, PRICING_PLANS } from "@/data/pricing";
 import ChatBubble from "@/components/interview/ChatBubble";
 
@@ -189,6 +193,27 @@ const Interview = () => {
     }
   };
 
+  const handleEndInterview = () => {
+    stopSpeaking();
+    stopListening();
+
+    // Save current answer if any
+    const updated = [...answers];
+    const trimmed = answer.trim();
+    if (trimmed) {
+      updated[currentQ] = trimmed;
+    }
+
+    // Only keep answered questions
+    const answeredQuestions = questions.slice(0, currentQ + (trimmed ? 1 : 0));
+    const answeredAnswers = updated.slice(0, currentQ + (trimmed ? 1 : 0));
+
+    sessionStorage.setItem("interview_answers", JSON.stringify(answeredAnswers));
+    sessionStorage.setItem("interview_questions", JSON.stringify(answeredQuestions));
+    navigate("/feedback");
+  };
+
+  const [showEndConfirm, setShowEndConfirm] = useState(false);
   const isLastQuestion = currentQ === questions.length - 1;
 
   return (
@@ -196,7 +221,15 @@ const Interview = () => {
       {/* Top bar */}
       <div className="border-b border-border/60 bg-card/80 backdrop-blur-sm sticky top-0 z-10">
         <div className="container max-w-4xl py-3 px-4 space-y-3">
-          <div className="flex flex-wrap gap-2 text-sm">
+          <div className="flex flex-wrap gap-2 text-sm items-center">
+            <Button
+              variant="destructive"
+              size="sm"
+              className="rounded-full text-xs gap-1.5"
+              onClick={() => setShowEndConfirm(true)}
+            >
+              <LogOut className="h-3.5 w-3.5" /> End Interview
+            </Button>
             <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 text-primary px-3 py-1 font-semibold text-xs">
               <Briefcase className="h-3.5 w-3.5" /> {role}
             </span>
@@ -294,6 +327,23 @@ const Interview = () => {
           )}
         </div>
       </div>
+
+      <AlertDialog open={showEndConfirm} onOpenChange={setShowEndConfirm}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>End Interview Early?</AlertDialogTitle>
+            <AlertDialogDescription>
+              You've answered {currentQ} of {questions.length} questions. Your feedback report will be generated based on the answers provided so far.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Continue Interview</AlertDialogCancel>
+            <AlertDialogAction onClick={handleEndInterview} className="bg-destructive text-destructive-foreground hover:bg-destructive/90">
+              End & Get Report
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };

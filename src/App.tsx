@@ -15,6 +15,7 @@ import Interview from "./pages/Interview";
 import DeviceCheck from "./pages/DeviceCheck";
 import Feedback from "./pages/Feedback";
 import Help from "./pages/Help";
+import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();

@@ -3,7 +3,11 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ChevronRight, Briefcase, Clock, Layers, Volume2, VolumeX, Mic, MicOff, Send } from "lucide-react";
+import { ChevronRight, Briefcase, Clock, Layers, Volume2, VolumeX, Mic, MicOff, Send, LogOut } from "lucide-react";
+import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { getPlanById, PRICING_PLANS } from "@/data/pricing";
 import ChatBubble from "@/components/interview/ChatBubble";
 

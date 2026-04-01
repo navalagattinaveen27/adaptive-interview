@@ -189,6 +189,27 @@ const Interview = () => {
     }
   };
 
+  const handleEndInterview = () => {
+    stopSpeaking();
+    stopListening();
+
+    // Save current answer if any
+    const updated = [...answers];
+    const trimmed = answer.trim();
+    if (trimmed) {
+      updated[currentQ] = trimmed;
+    }
+
+    // Only keep answered questions
+    const answeredQuestions = questions.slice(0, currentQ + (trimmed ? 1 : 0));
+    const answeredAnswers = updated.slice(0, currentQ + (trimmed ? 1 : 0));
+
+    sessionStorage.setItem("interview_answers", JSON.stringify(answeredAnswers));
+    sessionStorage.setItem("interview_questions", JSON.stringify(answeredQuestions));
+    navigate("/feedback");
+  };
+
+  const [showEndConfirm, setShowEndConfirm] = useState(false);
   const isLastQuestion = currentQ === questions.length - 1;
 
   return (

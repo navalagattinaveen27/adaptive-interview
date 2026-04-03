@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts";
 import { ChevronRight, TrendingUp, Target, Clock, Award, Sparkles, CalendarDays } from "lucide-react";
+import TermsConsentDialog from "@/components/TermsConsentDialog";
 
 const mockSessions = [
   { date: "Mar 20", role: "Software Engineer", score: 72 },
@@ -18,6 +20,15 @@ const chartData = mockSessions.map((s) => ({ name: s.date, score: s.score }));
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [showTerms, setShowTerms] = useState(false);
+
+  useEffect(() => {
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      const timer = setTimeout(() => setShowTerms(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const stats = [
     { icon: Target, label: "Sessions", value: "5", color: "text-primary", bg: "bg-primary/10" },
@@ -157,6 +168,15 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      <TermsConsentDialog
+        open={showTerms}
+        onAccept={() => {
+          sessionStorage.setItem("terms_accepted", "true");
+          setShowTerms(false);
+        }}
+        onDismiss={() => setShowTerms(false)}
+      />
     </div>
   );
 };

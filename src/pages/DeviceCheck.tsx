@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Mic, Volume2, CheckCircle2, XCircle, Loader2, ChevronRight, Sparkles } from "lucide-react";
+import TermsConsentDialog from "@/components/TermsConsentDialog";
 
 type TestStatus = "idle" | "testing" | "passed" | "failed";
 
@@ -11,6 +12,7 @@ const DeviceCheck = () => {
   const [micStatus, setMicStatus] = useState<TestStatus>("idle");
   const [speakerStatus, setSpeakerStatus] = useState<TestStatus>("idle");
   const [micLevel, setMicLevel] = useState(0);
+  const [showTerms, setShowTerms] = useState(false);
   const animFrameRef = useRef<number>();
   const streamRef = useRef<MediaStream | null>(null);
 
@@ -71,6 +73,19 @@ const DeviceCheck = () => {
   const canProceed = micStatus === "passed" && speakerStatus === "passed";
 
   const handleProceed = () => {
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      setShowTerms(true);
+      return;
+    }
+    if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
+    navigate("/interview");
+  };
+
+  const proceedAfterTerms = () => {
+    sessionStorage.setItem("terms_accepted", "true");
+    setShowTerms(false);
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
     navigate("/interview");
@@ -188,6 +203,12 @@ const DeviceCheck = () => {
           )}
         </CardContent>
       </Card>
+
+      <TermsConsentDialog
+        open={showTerms}
+        onAccept={proceedAfterTerms}
+        onDismiss={() => setShowTerms(false)}
+      />
     </div>
   );
 };

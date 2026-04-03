@@ -12,6 +12,7 @@ const DeviceCheck = () => {
   const [micStatus, setMicStatus] = useState<TestStatus>("idle");
   const [speakerStatus, setSpeakerStatus] = useState<TestStatus>("idle");
   const [micLevel, setMicLevel] = useState(0);
+  const [showTerms, setShowTerms] = useState(false);
   const animFrameRef = useRef<number>();
   const streamRef = useRef<MediaStream | null>(null);
 

@@ -203,6 +203,12 @@ const DeviceCheck = () => {
           )}
         </CardContent>
       </Card>
+
+      <TermsConsentDialog
+        open={showTerms}
+        onAccept={proceedAfterTerms}
+        onDismiss={() => setShowTerms(false)}
+      />
     </div>
   );
 };

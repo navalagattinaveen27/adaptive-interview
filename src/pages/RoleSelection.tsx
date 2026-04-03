@@ -114,6 +114,7 @@ const RoleSelection = () => {
     sessionStorage.setItem("interview_domain", domain);
     sessionStorage.setItem("interview_experience", experience);
     sessionStorage.setItem("interview_company", company);
+    sessionStorage.setItem("interview_job_description", jobDescription);
     navigate("/payment");
   };
 

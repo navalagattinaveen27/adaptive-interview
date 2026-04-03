@@ -168,6 +168,24 @@ const RoleSelection = () => {
             placeholder="Select or type experience..."
           />
 
+          {/* Job Description */}
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2 text-sm font-semibold">
+              <FileText className="h-4 w-4 text-primary" /> Job Description (Optional)
+            </Label>
+            <Textarea
+              className="min-h-[120px] transition-shadow focus:shadow-md resize-y"
+              placeholder="Paste or type the job description here. We'll tailor your interview questions based on the role requirements, skills, and qualifications mentioned in the JD to give you the most relevant practice experience."
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+            />
+            {jobDescription.trim().length > 0 && (
+              <p className="text-xs text-primary font-medium flex items-center gap-1">
+                <CheckCircle2 className="h-3 w-3" /> Job description added — questions will be tailored accordingly
+              </p>
+            )}
+          </div>
+
           {/* Target Company */}
           <div className="space-y-2">
             <Label className="flex items-center gap-2 text-sm font-semibold">

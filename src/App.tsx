@@ -8,6 +8,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
+import ForgotPassword from "./pages/ForgotPassword";
+import ForgotUsername from "./pages/ForgotUsername";
 import Dashboard from "./pages/Dashboard";
 import RoleSelection from "./pages/RoleSelection";
 import Payment from "./pages/Payment";
@@ -39,6 +41,8 @@ const AppRoutes = () => {
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/forgot-username" element={<ForgotUsername />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         <Route path="/role-selection" element={<ProtectedRoute><RoleSelection /></ProtectedRoute>} />
         <Route path="/payment" element={<ProtectedRoute><Payment /></ProtectedRoute>} />

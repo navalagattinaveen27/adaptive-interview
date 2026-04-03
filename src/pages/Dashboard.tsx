@@ -168,6 +168,15 @@ const Dashboard = () => {
           </CardContent>
         </Card>
       </div>
+
+      <TermsConsentDialog
+        open={showTerms}
+        onAccept={() => {
+          sessionStorage.setItem("terms_accepted", "true");
+          setShowTerms(false);
+        }}
+        onDismiss={() => setShowTerms(false)}
+      />
     </div>
   );
 };

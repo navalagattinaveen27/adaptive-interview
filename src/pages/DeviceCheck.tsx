@@ -73,6 +73,19 @@ const DeviceCheck = () => {
   const canProceed = micStatus === "passed" && speakerStatus === "passed";
 
   const handleProceed = () => {
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      setShowTerms(true);
+      return;
+    }
+    if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
+    if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
+    navigate("/interview");
+  };
+
+  const proceedAfterTerms = () => {
+    sessionStorage.setItem("terms_accepted", "true");
+    setShowTerms(false);
     if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current);
     if (streamRef.current) streamRef.current.getTracks().forEach((t) => t.stop());
     navigate("/interview");

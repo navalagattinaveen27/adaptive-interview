@@ -20,6 +20,15 @@ const chartData = mockSessions.map((s) => ({ name: s.date, score: s.score }));
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [showTerms, setShowTerms] = useState(false);
+
+  useEffect(() => {
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      const timer = setTimeout(() => setShowTerms(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const stats = [
     { icon: Target, label: "Sessions", value: "5", color: "text-primary", bg: "bg-primary/10" },

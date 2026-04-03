@@ -1,9 +1,11 @@
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/contexts/AuthContext";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line, CartesianGrid } from "recharts";
 import { ChevronRight, TrendingUp, Target, Clock, Award, Sparkles, CalendarDays } from "lucide-react";
+import TermsConsentDialog from "@/components/TermsConsentDialog";
 
 const mockSessions = [
   { date: "Mar 20", role: "Software Engineer", score: 72 },

@@ -209,6 +209,7 @@ const RoleSelection = () => {
               {domain && <p><span className="text-muted-foreground">Domain:</span> <span className="font-semibold">{domain}</span></p>}
               {experience && <p><span className="text-muted-foreground">Experience:</span> <span className="font-semibold">{experience}</span></p>}
               {company && <p><span className="text-muted-foreground">Company:</span> <span className="font-semibold">{company}</span></p>}
+              {jobDescription && <p><span className="text-muted-foreground">Job Description:</span> <span className="font-semibold">Added ✓</span></p>}
             </div>
           )}
 

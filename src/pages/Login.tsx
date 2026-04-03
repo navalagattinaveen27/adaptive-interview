@@ -104,6 +104,14 @@ const Login = () => {
                 <Button className="w-full gradient-primary text-primary-foreground py-5 font-semibold" disabled={loading}>
                   {loading ? "Signing in..." : "Login"}
                 </Button>
+                <div className="flex justify-between mt-3">
+                  <button type="button" onClick={() => navigate("/forgot-username")} className="text-xs text-muted-foreground hover:text-primary transition-colors">
+                    Forgot Username?
+                  </button>
+                  <button type="button" onClick={() => navigate("/forgot-password")} className="text-xs text-muted-foreground hover:text-primary transition-colors">
+                    Forgot Password?
+                  </button>
+                </div>
               </form>
             </TabsContent>
 

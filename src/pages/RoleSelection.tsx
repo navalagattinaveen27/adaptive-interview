@@ -88,6 +88,7 @@ const RoleSelection = () => {
   const [showExpDropdown, setShowExpDropdown] = useState(false);
 
   const [company, setCompany] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
 
   const domains = useMemo(() => getDomainsForRole(role), [role]);
 

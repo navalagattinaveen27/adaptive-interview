@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ROLES, getDomainsForRole, EXPERIENCE_OPTIONS } from "@/data/roles";
-import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2, Building2 } from "lucide-react";
+import { Textarea } from "@/components/ui/textarea";
+import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2, Building2, FileText } from "lucide-react";
 
 interface DropdownInputProps {
   label: string;
@@ -87,6 +88,7 @@ const RoleSelection = () => {
   const [showExpDropdown, setShowExpDropdown] = useState(false);
 
   const [company, setCompany] = useState("");
+  const [jobDescription, setJobDescription] = useState("");
 
   const domains = useMemo(() => getDomainsForRole(role), [role]);
 
@@ -112,6 +114,7 @@ const RoleSelection = () => {
     sessionStorage.setItem("interview_domain", domain);
     sessionStorage.setItem("interview_experience", experience);
     sessionStorage.setItem("interview_company", company);
+    sessionStorage.setItem("interview_job_description", jobDescription);
     navigate("/payment");
   };
 
@@ -165,6 +168,24 @@ const RoleSelection = () => {
             placeholder="Select or type experience..."
           />
 
+          {/* Job Description */}
+          <div className="space-y-2">
+            <Label className="flex items-center gap-2 text-sm font-semibold">
+              <FileText className="h-4 w-4 text-primary" /> Job Description (Optional)
+            </Label>
+            <Textarea
+              className="min-h-[120px] transition-shadow focus:shadow-md resize-y"
+              placeholder="Paste or type the job description here. We'll tailor your interview questions based on the role requirements, skills, and qualifications mentioned in the JD to give you the most relevant practice experience."
+              value={jobDescription}
+              onChange={(e) => setJobDescription(e.target.value)}
+            />
+            {jobDescription.trim().length > 0 && (
+              <p className="text-xs text-primary font-medium flex items-center gap-1">
+                <CheckCircle2 className="h-3 w-3" /> Job description added — questions will be tailored accordingly
+              </p>
+            )}
+          </div>
+
           {/* Target Company */}
           <div className="space-y-2">
             <Label className="flex items-center gap-2 text-sm font-semibold">
@@ -188,6 +209,7 @@ const RoleSelection = () => {
               {domain && <p><span className="text-muted-foreground">Domain:</span> <span className="font-semibold">{domain}</span></p>}
               {experience && <p><span className="text-muted-foreground">Experience:</span> <span className="font-semibold">{experience}</span></p>}
               {company && <p><span className="text-muted-foreground">Company:</span> <span className="font-semibold">{company}</span></p>}
+              {jobDescription && <p><span className="text-muted-foreground">Job Description:</span> <span className="font-semibold">Added ✓</span></p>}
             </div>
           )}
 

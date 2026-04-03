@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Mic, Volume2, CheckCircle2, XCircle, Loader2, ChevronRight, Sparkles } from "lucide-react";
+import TermsConsentDialog from "@/components/TermsConsentDialog";
 
 type TestStatus = "idle" | "testing" | "passed" | "failed";
 

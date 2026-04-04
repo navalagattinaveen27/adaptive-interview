@@ -90,6 +90,15 @@ const RoleSelection = () => {
 
   const [company, setCompany] = useState("");
   const [jobDescription, setJobDescription] = useState("");
+  const [showTerms, setShowTerms] = useState(false);
+
+  useEffect(() => {
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      const timer = setTimeout(() => setShowTerms(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const domains = useMemo(() => getDomainsForRole(role), [role]);
 

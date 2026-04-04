@@ -110,6 +110,11 @@ const RoleSelection = () => {
   const canProceed = role.trim().length > 0;
 
   const handleProceed = () => {
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      toast.error("Please accept the Terms & Conditions first. You can do so during login.");
+      return;
+    }
     sessionStorage.setItem("interview_role", role);
     sessionStorage.setItem("interview_domain", domain);
     sessionStorage.setItem("interview_experience", experience);

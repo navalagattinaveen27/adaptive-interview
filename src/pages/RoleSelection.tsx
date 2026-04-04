@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ROLES, getDomainsForRole, EXPERIENCE_OPTIONS } from "@/data/roles";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2, Building2, FileText } from "lucide-react";
 
 interface DropdownInputProps {

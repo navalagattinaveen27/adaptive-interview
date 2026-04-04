@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import TermsConsentDialog from "@/components/TermsConsentDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -89,6 +90,15 @@ const RoleSelection = () => {
 
   const [company, setCompany] = useState("");
   const [jobDescription, setJobDescription] = useState("");
+  const [showTerms, setShowTerms] = useState(false);
+
+  useEffect(() => {
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      const timer = setTimeout(() => setShowTerms(true), 800);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const domains = useMemo(() => getDomainsForRole(role), [role]);
 
@@ -222,6 +232,14 @@ const RoleSelection = () => {
           </Button>
         </CardContent>
       </Card>
+      <TermsConsentDialog
+        open={showTerms}
+        onAccept={() => {
+          sessionStorage.setItem("terms_accepted", "true");
+          setShowTerms(false);
+        }}
+        onDismiss={() => setShowTerms(false)}
+      />
     </div>
   );
 };

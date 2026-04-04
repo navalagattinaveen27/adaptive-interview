@@ -62,6 +62,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     sessionStorage.removeItem("interview_domain");
     sessionStorage.removeItem("interview_experience");
     sessionStorage.removeItem("interview_company");
+    sessionStorage.removeItem("terms_accepted");
+    sessionStorage.removeItem("interview_job_description");
     setUser(null);
   }, []);
 

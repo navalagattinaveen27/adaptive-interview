@@ -1,12 +1,12 @@
-import { useState, useMemo, useEffect } from "react";
+import { useState, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
-import TermsConsentDialog from "@/components/TermsConsentDialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { ROLES, getDomainsForRole, EXPERIENCE_OPTIONS } from "@/data/roles";
 import { Textarea } from "@/components/ui/textarea";
+import { toast } from "sonner";
 import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2, Building2, FileText } from "lucide-react";
 
 interface DropdownInputProps {
@@ -90,15 +90,6 @@ const RoleSelection = () => {
 
   const [company, setCompany] = useState("");
   const [jobDescription, setJobDescription] = useState("");
-  const [showTerms, setShowTerms] = useState(false);
-
-  useEffect(() => {
-    const accepted = sessionStorage.getItem("terms_accepted");
-    if (!accepted) {
-      const timer = setTimeout(() => setShowTerms(true), 800);
-      return () => clearTimeout(timer);
-    }
-  }, []);
 
   const domains = useMemo(() => getDomainsForRole(role), [role]);
 
@@ -120,6 +111,11 @@ const RoleSelection = () => {
   const canProceed = role.trim().length > 0;
 
   const handleProceed = () => {
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      toast.error("Please accept the Terms & Conditions first. You can do so during login.");
+      return;
+    }
     sessionStorage.setItem("interview_role", role);
     sessionStorage.setItem("interview_domain", domain);
     sessionStorage.setItem("interview_experience", experience);
@@ -232,14 +228,6 @@ const RoleSelection = () => {
           </Button>
         </CardContent>
       </Card>
-      <TermsConsentDialog
-        open={showTerms}
-        onAccept={() => {
-          sessionStorage.setItem("terms_accepted", "true");
-          setShowTerms(false);
-        }}
-        onDismiss={() => setShowTerms(false)}
-      />
     </div>
   );
 };

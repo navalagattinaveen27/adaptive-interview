@@ -8,13 +8,27 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { Lock, Mail, User, Sparkles, Phone } from "lucide-react";
+import TermsConsentDialog from "@/components/TermsConsentDialog";
 
 const Login = () => {
   const { login, signup, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const [showTerms, setShowTerms] = useState(false);
+  const [pendingRedirect, setPendingRedirect] = useState("");
 
   const redirect = sessionStorage.getItem("redirect_after_login") || "/dashboard";
+
+  const afterAuth = () => {
+    sessionStorage.removeItem("redirect_after_login");
+    const accepted = sessionStorage.getItem("terms_accepted");
+    if (!accepted) {
+      setPendingRedirect(redirect);
+      setShowTerms(true);
+    } else {
+      navigate(redirect);
+    }
+  };
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,9 +36,8 @@ const Login = () => {
     const fd = new FormData(e.currentTarget);
     try {
       await login(fd.get("email") as string, fd.get("password") as string);
-      sessionStorage.removeItem("redirect_after_login");
       toast.success("Logged in successfully!");
-      navigate(redirect);
+      afterAuth();
     } catch { toast.error("Login failed"); }
     setLoading(false);
   };
@@ -40,9 +53,8 @@ const Login = () => {
         fd.get("password") as string,
         fd.get("phone") as string
       );
-      sessionStorage.removeItem("redirect_after_login");
       toast.success("Account created!");
-      navigate(redirect);
+      afterAuth();
     } catch { toast.error("Signup failed"); }
     setLoading(false);
   };
@@ -51,11 +63,21 @@ const Login = () => {
     setLoading(true);
     try {
       await loginWithGoogle();
-      sessionStorage.removeItem("redirect_after_login");
       toast.success("Logged in with Google!");
-      navigate(redirect);
+      afterAuth();
     } catch { toast.error("Google login failed"); }
     setLoading(false);
+  };
+
+  const handleTermsAccept = () => {
+    sessionStorage.setItem("terms_accepted", "true");
+    setShowTerms(false);
+    navigate(pendingRedirect || redirect);
+  };
+
+  const handleTermsDismiss = () => {
+    setShowTerms(false);
+    navigate(pendingRedirect || redirect);
   };
 
   return (
@@ -160,6 +182,12 @@ const Login = () => {
           </p>
         </CardContent>
       </Card>
+
+      <TermsConsentDialog
+        open={showTerms}
+        onAccept={handleTermsAccept}
+        onDismiss={handleTermsDismiss}
+      />
     </div>
   );
 };

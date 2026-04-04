@@ -228,14 +228,6 @@ const RoleSelection = () => {
           </Button>
         </CardContent>
       </Card>
-      <TermsConsentDialog
-        open={showTerms}
-        onAccept={() => {
-          sessionStorage.setItem("terms_accepted", "true");
-          setShowTerms(false);
-        }}
-        onDismiss={() => setShowTerms(false)}
-      />
     </div>
   );
 };

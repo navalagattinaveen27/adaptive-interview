@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import TermsConsentDialog from "@/components/TermsConsentDialog";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { ROLES, getDomainsForRole, EXPERIENCE_OPTIONS } from "@/data/roles";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
-import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2, Building2, FileText } from "lucide-react";
+import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2, Building2, FileText, Shield } from "lucide-react";
 
 interface DropdownInputProps {
   label: string;
@@ -90,6 +91,9 @@ const RoleSelection = () => {
 
   const [company, setCompany] = useState("");
   const [jobDescription, setJobDescription] = useState("");
+  const [showTerms, setShowTerms] = useState(false);
+
+  const termsAccepted = sessionStorage.getItem("terms_accepted") === "true";
 
   const domains = useMemo(() => getDomainsForRole(role), [role]);
 
@@ -219,6 +223,24 @@ const RoleSelection = () => {
             </div>
           )}
 
+          {!termsAccepted && (
+            <button
+              type="button"
+              onClick={() => setShowTerms(true)}
+              className="flex items-center justify-center gap-2 w-full text-sm text-primary font-semibold hover:underline underline-offset-4 transition-all py-2"
+            >
+              <Shield className="h-4 w-4" />
+              Click here to accept the Terms and Conditions
+            </button>
+          )}
+
+          {termsAccepted && (
+            <p className="flex items-center justify-center gap-2 text-sm text-primary font-medium">
+              <CheckCircle2 className="h-4 w-4" />
+              Terms and Conditions accepted
+            </p>
+          )}
+
           <Button
             className="w-full gradient-accent text-accent-foreground py-6 rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300"
             disabled={!canProceed}
@@ -228,6 +250,15 @@ const RoleSelection = () => {
           </Button>
         </CardContent>
       </Card>
+
+      <TermsConsentDialog
+        open={showTerms}
+        onAccept={() => {
+          sessionStorage.setItem("terms_accepted", "true");
+          setShowTerms(false);
+        }}
+        onDismiss={() => setShowTerms(false)}
+      />
     </div>
   );
 };

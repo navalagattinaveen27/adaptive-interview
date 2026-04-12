@@ -19,10 +19,6 @@ interface TermsConsentDialogProps {
 
 const TermsConsentDialog = ({ open, onAccept, onDismiss }: TermsConsentDialogProps) => {
   const [agreeTerms, setAgreeTerms] = useState(false);
-  const [agreeData, setAgreeData] = useState(false);
-  const [agreeAnalytics, setAgreeAnalytics] = useState(false);
-
-  const allAgreed = agreeTerms && agreeData && agreeAnalytics;
 
   return (
     <Dialog open={open} onOpenChange={(v) => { if (!v) onDismiss(); }}>
@@ -50,37 +46,29 @@ const TermsConsentDialog = ({ open, onAccept, onDismiss }: TermsConsentDialogPro
         </ScrollArea>
 
         <div className="space-y-3 mt-2">
-          <div className="flex items-start gap-3">
+          <p className="text-sm text-muted-foreground leading-snug">
+            By accepting, you also consent to the following:
+          </p>
+          <ul className="space-y-2 pl-1">
+            <li className="flex items-start gap-2 text-sm text-muted-foreground leading-snug">
+              <span className="text-primary mt-0.5">•</span>
+              The collection and use of my personal and interview data as described above
+            </li>
+            <li className="flex items-start gap-2 text-sm text-muted-foreground leading-snug">
+              <span className="text-primary mt-0.5">•</span>
+              My anonymized data being used for platform improvement and analytics
+            </li>
+          </ul>
+
+          <div className="flex items-start gap-3 pt-2 border-t border-border/60">
             <Checkbox
               id="terms-agree"
               checked={agreeTerms}
               onCheckedChange={(v) => setAgreeTerms(v === true)}
               className="mt-0.5"
             />
-            <label htmlFor="terms-agree" className="text-sm cursor-pointer leading-snug">
+            <label htmlFor="terms-agree" className="text-sm cursor-pointer leading-snug font-medium">
               I agree to the Terms and Conditions and Privacy Policy
-            </label>
-          </div>
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="data-agree"
-              checked={agreeData}
-              onCheckedChange={(v) => setAgreeData(v === true)}
-              className="mt-0.5"
-            />
-            <label htmlFor="data-agree" className="text-sm cursor-pointer leading-snug">
-              I consent to the collection and use of my personal and interview data as described above
-            </label>
-          </div>
-          <div className="flex items-start gap-3">
-            <Checkbox
-              id="analytics-agree"
-              checked={agreeAnalytics}
-              onCheckedChange={(v) => setAgreeAnalytics(v === true)}
-              className="mt-0.5"
-            />
-            <label htmlFor="analytics-agree" className="text-sm cursor-pointer leading-snug">
-              I consent to my anonymized data being used for platform improvement and analytics
             </label>
           </div>
         </div>
@@ -89,7 +77,7 @@ const TermsConsentDialog = ({ open, onAccept, onDismiss }: TermsConsentDialogPro
           <Button variant="ghost" size="sm" onClick={onDismiss}>
             Later
           </Button>
-          <Button size="sm" disabled={!allAgreed} onClick={onAccept}>
+          <Button size="sm" disabled={!agreeTerms} onClick={onAccept}>
             Accept & Continue
           </Button>
         </div>

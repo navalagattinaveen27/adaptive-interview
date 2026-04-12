@@ -24,7 +24,7 @@ const Index = () => {
   };
 
   return (
-    <div className="flex flex-col bg-background overflow-hidden">
+    <div className="flex flex-col bg-gradient-to-b from-primary/5 via-background to-background overflow-hidden">
       {/* Hero */}
       <section className="relative min-h-[90vh] flex flex-col items-center justify-center text-center px-6 overflow-hidden">
         {/* Decorative orbs */}
@@ -52,7 +52,7 @@ const Index = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-up" style={{ animationDelay: "0.6s" }}>
             <Button
               size="lg"
-              className="bg-foreground text-background hover:bg-foreground/90 text-base px-10 py-7 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+              className="gradient-primary text-primary-foreground text-base px-10 py-7 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
               onClick={() => handleStart()}
             >
               Get Started
@@ -231,7 +231,7 @@ const Index = () => {
                     className={`w-full py-5 rounded-full font-semibold hover:scale-[1.02] transition-all duration-300 ${
                       plan.popular
                         ? "bg-background text-foreground hover:bg-background/90 shadow-lg"
-                        : "bg-foreground text-background hover:bg-foreground/90"
+                        : "gradient-primary text-primary-foreground"
                     }`}
                     onClick={() => handleStart(plan.id)}
                   >
@@ -270,7 +270,7 @@ const Index = () => {
             </p>
             <Button
               size="lg"
-              className="bg-foreground text-background hover:bg-foreground/90 text-base px-12 py-7 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
+              className="gradient-primary text-primary-foreground text-base px-12 py-7 rounded-full font-semibold shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 group"
               onClick={() => handleStart()}
             >
               Get Started <ChevronRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />

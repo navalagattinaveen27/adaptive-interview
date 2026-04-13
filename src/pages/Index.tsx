@@ -4,6 +4,9 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight, CheckCircle2, Clock, Sparkles, Brain, BarChart3, TrendingUp, MessageSquare, Zap } from "lucide-react";
 import { PRICING_PLANS, PLAN_FEATURES } from "@/data/pricing";
 import ScrollReveal from "@/components/landing/ScrollReveal";
+import stepChooseRole from "@/assets/step-choose-role.jpg";
+import stepPickPlan from "@/assets/step-pick-plan.jpg";
+import stepGetReport from "@/assets/step-get-report.jpg";
 
 const FEATURE_ICONS = [Sparkles, Brain, BarChart3, TrendingUp, MessageSquare, Zap];
 
@@ -108,19 +111,31 @@ const Index = () => {
               Three simple steps.
             </h2>
           </ScrollReveal>
-          <div className="grid md:grid-cols-3 gap-12 md:gap-16">
+          <div className="flex flex-col gap-20 md:gap-28">
             {[
-              { num: "01", title: "Choose Your Role", desc: "Select from 100+ roles across tech, government, and defense sectors." },
-              { num: "02", title: "Pick a Plan", desc: "Choose a 20, 30, or 45-minute interview session that fits your schedule." },
-              { num: "03", title: "Get Your Report", desc: "Receive a detailed performance breakdown with actionable insights." },
+              { num: "01", title: "Choose Your Role", desc: "Select from 100+ roles across tech, government, and defense sectors.", img: stepChooseRole },
+              { num: "02", title: "Pick a Plan", desc: "Choose a 20, 30, or 45-minute interview session that fits your schedule.", img: stepPickPlan },
+              { num: "03", title: "Get Your Report", desc: "Receive a detailed performance breakdown with actionable insights.", img: stepGetReport },
             ].map((step, i) => (
               <ScrollReveal key={step.num} delay={i * 200}>
-                <div className="text-center md:text-left group">
-                  <span className="text-6xl md:text-7xl font-extrabold text-primary/10 group-hover:text-primary/20 block leading-none mb-4 transition-colors duration-500">
-                    {step.num}
-                  </span>
-                  <h3 className="text-xl font-bold text-foreground mb-3">{step.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed">{step.desc}</p>
+                <div className={`flex flex-col ${i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse'} items-center gap-10 md:gap-16`}>
+                  <div className="w-full md:w-1/2 overflow-hidden rounded-2xl shadow-xl">
+                    <img
+                      src={step.img}
+                      alt={step.title}
+                      loading="lazy"
+                      width={800}
+                      height={512}
+                      className="w-full h-auto object-cover transition-transform duration-700 hover:scale-105"
+                    />
+                  </div>
+                  <div className="w-full md:w-1/2 text-center md:text-left">
+                    <span className="text-7xl md:text-8xl font-extrabold text-primary/10 block leading-none mb-4">
+                      {step.num}
+                    </span>
+                    <h3 className="text-2xl md:text-3xl font-bold text-foreground mb-4">{step.title}</h3>
+                    <p className="text-muted-foreground text-lg leading-relaxed">{step.desc}</p>
+                  </div>
                 </div>
               </ScrollReveal>
             ))}

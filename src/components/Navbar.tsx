@@ -19,7 +19,7 @@ const Navbar = () => {
           <span className="gradient-primary text-primary-foreground rounded-xl px-2.5 py-1 text-sm font-extrabold shadow-md group-hover:shadow-lg transition-shadow">
             AI
           </span>
-          <span className="hidden sm:inline">InterviewPro</span>
+          <span className="hidden sm:inline">EvalSmart</span>
         </Link>
 
         <nav className="flex items-center gap-1.5">

@@ -5,7 +5,7 @@ const Footer = () => (
     <div className="container flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
       <div className="flex items-center gap-2">
         <span className="gradient-primary text-primary-foreground rounded-lg px-2 py-0.5 text-xs font-extrabold">AI</span>
-        <p>&copy; {new Date().getFullYear()} InterviewPro. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} EvalSmart. All rights reserved.</p>
       </div>
       <div className="flex gap-6">
         <a href="#" className="hover:text-primary transition-colors text-sm">Terms</a>

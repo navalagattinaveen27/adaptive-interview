@@ -35,7 +35,7 @@ const Contact = () => {
   };
 
   const contactInfo = [
-    { icon: Mail, label: "Email", value: "support@adaptiveinterview.com", href: "mailto:support@adaptiveinterview.com" },
+    { icon: Mail, label: "Email", value: "support@evalsmart.com", href: "mailto:support@evalsmart.com" },
     { icon: Phone, label: "Phone", value: "+1 (555) 123-4567", href: "tel:+15551234567" },
     { icon: MapPin, label: "Address", value: "123 Innovation Drive, San Francisco, CA 94105" },
     { icon: Clock, label: "Hours", value: "Mon–Fri, 9:00 AM – 6:00 PM PST" },

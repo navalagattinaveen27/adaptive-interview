@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui/button";
-import { ChevronRight, CheckCircle2, Clock, Sparkles, Brain, BarChart3, TrendingUp, MessageSquare, Zap } from "lucide-react";
+import { ChevronRight, CheckCircle2, Clock, Cpu, SlidersHorizontal, ChartColumnBig, TrendingUp, MessageCircleHeart, Zap } from "lucide-react";
 import { PRICING_PLANS, PLAN_FEATURES } from "@/data/pricing";
 import ScrollReveal from "@/components/landing/ScrollReveal";
 import stepChooseRole from "@/assets/step-choose-role.jpg";
 import stepPickPlan from "@/assets/step-pick-plan.jpg";
 import stepGetReport from "@/assets/step-get-report.jpg";
 
-const FEATURE_ICONS = [Sparkles, Brain, BarChart3, TrendingUp, MessageSquare, Zap];
+const FEATURE_ICONS = [Cpu, SlidersHorizontal, ChartColumnBig, TrendingUp, MessageCircleHeart, Zap];
 
 const Index = () => {
   const { isAuthenticated } = useAuth();

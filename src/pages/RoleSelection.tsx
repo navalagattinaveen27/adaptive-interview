@@ -9,6 +9,7 @@ import { ROLES, getDomainsForRole, EXPERIENCE_OPTIONS } from "@/data/roles";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 import { Search, ChevronRight, Briefcase, Layers, Clock, LucideIcon, Sparkles, CheckCircle2, Building2, FileText, Shield } from "lucide-react";
+import ResumeUpload from "@/components/interview/ResumeUpload";
 
 interface DropdownInputProps {
   label: string;
@@ -91,6 +92,7 @@ const RoleSelection = () => {
 
   const [company, setCompany] = useState("");
   const [jobDescription, setJobDescription] = useState("");
+  const [resumeText, setResumeText] = useState("");
   const [showTerms, setShowTerms] = useState(false);
 
   const termsAccepted = sessionStorage.getItem("terms_accepted") === "true";
@@ -125,6 +127,7 @@ const RoleSelection = () => {
     sessionStorage.setItem("interview_experience", experience);
     sessionStorage.setItem("interview_company", company);
     sessionStorage.setItem("interview_job_description", jobDescription);
+    sessionStorage.setItem("interview_resume", resumeText);
     navigate("/payment");
   };
 
@@ -177,6 +180,9 @@ const RoleSelection = () => {
             onSelect={setExperience}
             placeholder="Select or type experience..."
           />
+
+          {/* Resume Upload */}
+          <ResumeUpload onParsed={(text) => setResumeText(text)} />
 
           {/* Job Description */}
           <div className="space-y-2">

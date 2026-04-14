@@ -50,7 +50,7 @@ const Dashboard = () => {
             <p className="text-muted-foreground mt-1">Track your interview performance and progress.</p>
           </div>
           <Button
-            className="gradient-accent text-accent-foreground font-semibold px-6 py-5 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
+            className="gradient-primary text-primary-foreground font-semibold px-6 py-5 rounded-xl shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all duration-300"
             onClick={() => navigate("/role-selection")}
           >
             New Interview <ChevronRight className="ml-1 h-4 w-4" />
@@ -105,7 +105,7 @@ const Dashboard = () => {
           <Card className="hover:shadow-md transition-shadow duration-300">
             <CardHeader className="pb-2">
               <CardTitle className="text-base flex items-center gap-2">
-                <Award className="h-4 w-4 text-accent" />
+                <Award className="h-4 w-4 text-primary" />
                 Scores by Session
               </CardTitle>
             </CardHeader>
@@ -123,7 +123,7 @@ const Dashboard = () => {
                       fontSize: "0.875rem",
                     }}
                   />
-                  <Bar dataKey="score" fill="hsl(32, 95%, 52%)" radius={[6, 6, 0, 0]} />
+                  <Bar dataKey="score" fill="hsl(215, 80%, 28%)" radius={[6, 6, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>

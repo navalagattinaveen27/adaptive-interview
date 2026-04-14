@@ -90,7 +90,7 @@ const ResumeUpload = ({ onParsed }: ResumeUploadProps) => {
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 rounded-xl bg-muted/40 p-4 border border-border/40">
       <Label className="flex items-center gap-2 text-sm font-semibold">
         <Upload className="h-4 w-4 text-primary" /> Attach Resume (Optional)
       </Label>

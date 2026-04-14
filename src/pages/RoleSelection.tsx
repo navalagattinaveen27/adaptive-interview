@@ -27,7 +27,7 @@ interface DropdownInputProps {
 const DropdownInput = ({
   label, icon: Icon, value, search, setSearch, show, setShow, items, onSelect, placeholder,
 }: DropdownInputProps) => (
-  <div className="space-y-2">
+  <div className="space-y-2 rounded-xl bg-muted/40 p-4 border border-border/40">
     <Label className="flex items-center gap-2 text-sm font-semibold">
       <Icon className="h-4 w-4 text-primary" /> {label}
     </Label>
@@ -185,7 +185,7 @@ const RoleSelection = () => {
           <ResumeUpload onParsed={(text) => setResumeText(text)} />
 
           {/* Job Description */}
-          <div className="space-y-2">
+          <div className="space-y-2 rounded-xl bg-muted/40 p-4 border border-border/40">
             <Label className="flex items-center gap-2 text-sm font-semibold">
               <FileText className="h-4 w-4 text-primary" /> Job Description (Optional)
             </Label>
@@ -203,7 +203,7 @@ const RoleSelection = () => {
           </div>
 
           {/* Target Company */}
-          <div className="space-y-2">
+          <div className="space-y-2 rounded-xl bg-muted/40 p-4 border border-border/40">
             <Label className="flex items-center gap-2 text-sm font-semibold">
               <Building2 className="h-4 w-4 text-primary" /> Target Company (Optional)
             </Label>

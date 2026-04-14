@@ -17,7 +17,7 @@ const Navbar = () => {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center gap-2.5 font-bold text-xl tracking-tight text-foreground group">
           <span className="gradient-primary text-primary-foreground rounded-xl px-2.5 py-1 text-sm font-extrabold shadow-md group-hover:shadow-lg transition-shadow">
-            AI
+            ES
           </span>
           <span className="hidden sm:inline">EvalSmart</span>
         </Link>

@@ -4,7 +4,7 @@ const Footer = () => (
   <footer className="border-t border-border/60 bg-card/50 backdrop-blur-sm py-10 mt-auto">
     <div className="container flex flex-col sm:flex-row items-center justify-between gap-6 text-sm text-muted-foreground">
       <div className="flex items-center gap-2">
-        <span className="gradient-primary text-primary-foreground rounded-lg px-2 py-0.5 text-xs font-extrabold">AI</span>
+        <span className="gradient-primary text-primary-foreground rounded-lg px-2 py-0.5 text-xs font-extrabold">ES</span>
         <p>&copy; {new Date().getFullYear()} EvalSmart. All rights reserved.</p>
       </div>
       <div className="flex gap-6">

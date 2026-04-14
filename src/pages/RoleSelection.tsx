@@ -133,7 +133,7 @@ const RoleSelection = () => {
 
   return (
     <div className="flex-1 flex items-center justify-center py-12 px-4 bg-gradient-to-b from-primary/5 via-background to-background min-h-screen">
-      <Card className="w-full max-w-lg animate-fade-in shadow-xl border-border/60">
+      <Card className="w-full max-w-lg animate-fade-in shadow-xl border-border/60 bg-primary/[0.02]">
         <CardHeader className="text-center pb-4">
           <div className="mx-auto mb-3 h-14 w-14 rounded-2xl gradient-primary flex items-center justify-center shadow-lg">
             <Sparkles className="h-7 w-7 text-primary-foreground" />
@@ -248,7 +248,7 @@ const RoleSelection = () => {
           )}
 
           <Button
-            className="w-full gradient-accent text-accent-foreground py-6 rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300"
+            className="w-full gradient-primary text-primary-foreground py-6 rounded-xl text-base font-bold shadow-lg hover:shadow-xl hover:scale-[1.01] transition-all duration-300"
             disabled={!canProceed}
             onClick={handleProceed}
           >

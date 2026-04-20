@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 const PROTECTED_PREFIXES = ["/dashboard", "/role-selection", "/device-check", "/payment", "/interview"];
 const AUTH_ROUTES = ["/login", "/signup"];
 
-export async function middleware(request: NextRequest) {
+export async function proxy(request: NextRequest) {
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(

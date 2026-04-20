@@ -1,26 +1,114 @@
 @import "tailwindcss";
 
+/* ============================================================
+   EvalSmart (ES) Design System — Tailwind v4 + CSS variables
+   All colors use HSL. Primary = login-button blue.
+   ============================================================ */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Surfaces */
+  --background: 210 40% 98%;
+  --foreground: 215 25% 15%;
+  --card: 0 0% 100%;
+  --card-foreground: 215 25% 15%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 215 25% 15%;
+
+  /* Brand — primary blue (login button) */
+  --primary: 215 80% 28%;
+  --primary-foreground: 210 40% 98%;
+  --primary-glow: 215 85% 42%;
+
+  /* Secondary / muted */
+  --secondary: 215 25% 95%;
+  --secondary-foreground: 215 25% 20%;
+  --muted: 215 20% 94%;
+  --muted-foreground: 215 15% 45%;
+  --accent: 215 75% 92%;
+  --accent-foreground: 215 80% 28%;
+
+  /* Status */
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 210 40% 98%;
+  --success: 142 71% 38%;
+  --success-foreground: 210 40% 98%;
+  --warning: 38 92% 50%;
+  --warning-foreground: 215 25% 15%;
+
+  /* Borders / inputs */
+  --border: 215 20% 88%;
+  --input: 215 20% 88%;
+  --ring: 215 80% 28%;
+  --radius: 0.625rem;
+
+  /* Gradients & shadows */
+  --gradient-primary: linear-gradient(135deg, hsl(215 80% 28%), hsl(215 85% 42%));
+  --gradient-subtle: linear-gradient(180deg, hsl(210 40% 98%), hsl(215 25% 95%));
+  --shadow-elegant: 0 10px 30px -10px hsl(215 80% 28% / 0.25);
+  --shadow-card: 0 1px 3px 0 hsl(215 25% 15% / 0.08), 0 1px 2px -1px hsl(215 25% 15% / 0.06);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary-glow: hsl(var(--primary-glow));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-success: hsl(var(--success));
+  --color-success-foreground: hsl(var(--success-foreground));
+  --color-warning: hsl(var(--warning));
+  --color-warning-foreground: hsl(var(--warning-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-family: var(--font-sans), system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3, h4 {
+    color: hsl(var(--foreground));
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+  .gradient-subtle {
+    background: var(--gradient-subtle);
+  }
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
 }
